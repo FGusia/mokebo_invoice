@@ -31,6 +31,7 @@ import {
   Download
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { MagmaMark } from './MagmaLogo';
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
 const fmtEur = (n: number) => (n ?? 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -721,9 +722,7 @@ export default function App() {
         {/* ── HEADER ── */}
         <header className="no-print mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-mokebo-surface border border-mokebo-border rounded-3xl px-8 py-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-sm">
           <div className="flex items-center gap-5">
-            <div className="w-14 h-14 rounded-2xl bg-mokebo-green text-white flex items-center justify-center shadow-lg shadow-black/30">
-              <TrendingUp size={28} strokeWidth={2.5} />
-            </div>
+            <MagmaMark size={56} className="shadow-lg shadow-black/30" />
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="font-black text-2xl tracking-tight">Magma Auditor</h1>

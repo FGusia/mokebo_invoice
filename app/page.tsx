@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { FileText, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { MokeboMark, MokeboWordmark } from "@/components/MokeboLogo";
+import { MagmaMark } from "@/components/magma/MagmaLogo";
 
 type AppTile = {
   href: string;
@@ -17,7 +18,7 @@ const apps: AppTile[] = [
     title: "Rechnungsprüfung",
     description: "Automatisierte Audit von Herstellerrechnungen inkl. Aktionsrabatten & Stammdaten.",
     manufacturer: "Magma",
-    icon: <FileText size={22} strokeWidth={2.5} />,
+    icon: <MagmaMark size={48} />,
     available: true,
   },
 ];
@@ -63,7 +64,7 @@ export default function DashboardPage() {
                     }`}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 rounded-2xl bg-mokebo-mint text-mokebo-dark flex items-center justify-center">
+                      <div className="flex items-center justify-center">
                         {app.icon}
                       </div>
                       {app.available && (
