@@ -43,18 +43,18 @@ const herstellerApps: AppTile[] = [
 
 const logistikApps: AppTile[] = [
   {
-    href: "#",
+    href: "/gls/sperrgut-check",
     title: "Sperrgut-Check",
-    description: "Automatische Prüfung auf Sperrgut-Versand – folgt in Kürze.",
-    group: "DHL",
+    description: "Prüfung von Sperrgut-Zuschlägen auf GLS-Rechnungen gegen Artikel-Stammdaten.",
+    group: "GLS",
     icon: <Truck size={22} strokeWidth={2.5} />,
-    available: false,
+    available: true,
   },
   {
     href: "#",
     title: "Sperrgut-Check",
     description: "Automatische Prüfung auf Sperrgut-Versand – folgt in Kürze.",
-    group: "GLS",
+    group: "DHL",
     icon: <Truck size={22} strokeWidth={2.5} />,
     available: false,
   },

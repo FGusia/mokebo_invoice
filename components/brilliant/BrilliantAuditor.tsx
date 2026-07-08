@@ -1030,7 +1030,7 @@ export default function App() {
                       <div className="flex items-center gap-2">
                         <button 
                           onClick={() => setFilterErrors(!filterErrors)}
-                          className={`flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border transition-all ${filterErrors ? 'bg-mokebo-rust/150 text-white border-mokebo-rust shadow-lg shadow-rose-100' : 'bg-mokebo-surface text-mokebo-muted border-mokebo-border hover:border-mokebo-border'}`}
+                          className={`flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border transition-all ${filterErrors ? 'bg-mokebo-rust text-white border-mokebo-rust shadow-lg shadow-mokebo-rust/20' : 'bg-mokebo-surface text-mokebo-muted border-mokebo-border hover:border-mokebo-border'}`}
                         >
                           <Filter size={12} strokeWidth={3} />
                           NUR FEHLER
