@@ -42,8 +42,6 @@ const apps: AppTile[] = [
 ];
 
 export default function DashboardPage() {
-  const manufacturers = Array.from(new Set(apps.map((a) => a.manufacturer)));
-
   return (
     <div className="min-h-screen bg-mokebo-dark">
       <div className="max-w-screen-xl mx-auto px-4 py-10 md:px-8">
@@ -62,45 +60,39 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        {manufacturers.map((mfr) => (
-          <section key={mfr} className="mb-10">
-            <h2 className="text-[11px] font-black uppercase tracking-widest text-mokebo-muted mb-4">
-              {mfr}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {apps
-                .filter((a) => a.manufacturer === mfr)
-                .map((app, i) => (
-                  <Link
-                    key={i}
-                    href={app.href}
-                    aria-disabled={!app.available}
-                    className={`group relative bg-mokebo-surface border border-mokebo-border rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.25)] transition-all ${
-                      app.available
-                        ? "hover:shadow-lg hover:-translate-y-0.5 hover:border-mokebo-mint/50 cursor-pointer"
-                        : "opacity-50 cursor-not-allowed pointer-events-none"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center justify-center">
-                        {app.icon}
-                      </div>
-                      {app.available && (
-                        <ArrowUpRight
-                          size={18}
-                          className="text-mokebo-muted group-hover:text-mokebo-mint transition-colors"
-                        />
-                      )}
-                    </div>
-                    <h3 className="font-black text-lg tracking-tight text-mokebo-fg">{app.title}</h3>
-                    <p className="text-sm text-mokebo-muted font-medium mt-1">
-                      {app.description}
-                    </p>
-                  </Link>
-                ))}
-            </div>
-          </section>
-        ))}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {apps.map((app, i) => (
+            <Link
+              key={i}
+              href={app.href}
+              aria-disabled={!app.available}
+              className={`group relative bg-mokebo-surface border border-mokebo-border rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.25)] transition-all ${
+                app.available
+                  ? "hover:shadow-lg hover:-translate-y-0.5 hover:border-mokebo-mint/50 cursor-pointer"
+                  : "opacity-50 cursor-not-allowed pointer-events-none"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-center">
+                  {app.icon}
+                </div>
+                {app.available && (
+                  <ArrowUpRight
+                    size={18}
+                    className="text-mokebo-muted group-hover:text-mokebo-mint transition-colors"
+                  />
+                )}
+              </div>
+              <div className="text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1">
+                {app.manufacturer}
+              </div>
+              <h3 className="font-black text-lg tracking-tight text-mokebo-fg">{app.title}</h3>
+              <p className="text-sm text-mokebo-muted font-medium mt-1">
+                {app.description}
+              </p>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
