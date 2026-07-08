@@ -757,7 +757,7 @@ export default function App() {
                     setView(v.id as any);
                     setShowClearMasterConfirm(false);
                   }}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 ${view === v.id ? 'bg-mokebo-surface text-mokebo-fg shadow-md shadow-black/30/50' : 'text-mokebo-muted hover:text-mokebo-border'}`}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 ${view === v.id ? 'bg-mokebo-surface text-mokebo-fg shadow-md shadow-black/30/50' : 'text-mokebo-muted hover:text-mokebo-muted'}`}
                 >
                   <v.icon size={14} />
                   {v.label}
@@ -837,7 +837,7 @@ export default function App() {
                         onChange={e => setNewRule(r => ({...r, percent: e.target.value}))}
                         className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono" 
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-border">%</span>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-muted">%</span>
                     </div>
                   </div>
                   <div className="md:col-span-2 space-y-3">
@@ -940,7 +940,7 @@ export default function App() {
                         setEditingRuleId(null);
                         setNewRule(emptyRule());
                       }}
-                      className="px-6 py-4 text-xs font-bold text-mokebo-muted hover:text-mokebo-border transition-colors"
+                      className="px-6 py-4 text-xs font-bold text-mokebo-muted hover:text-mokebo-muted transition-colors"
                     >
                       ABBRECHEN
                     </button>
@@ -964,13 +964,13 @@ export default function App() {
                         ALLE LÖSCHEN
                       </button>
                     )}
-                    <Info size={16} className="text-mokebo-border" />
+                    <Info size={16} className="text-mokebo-muted" />
                   </div>
                 </div>
                 {discountRules.length === 0 ? (
                   <div className="py-24 text-center">
                     <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Calendar size={32} className="text-mokebo-border" />
+                      <Calendar size={32} className="text-mokebo-muted" />
                     </div>
                     <p className="font-bold text-mokebo-muted">Noch keine Rabattregeln definiert.</p>
                   </div>
@@ -1071,7 +1071,7 @@ export default function App() {
                         onChange={e => setNewMaster(m => ({...m, ek: parseNum(e.target.value)}))}
                         className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono" 
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-border">€</span>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-muted">€</span>
                     </div>
                   </div>
                   <div className="flex items-end">
@@ -1155,7 +1155,7 @@ export default function App() {
                 {masterPrices.length === 0 ? (
                   <div className="py-32 text-center">
                     <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <Database size={40} className="text-mokebo-border" />
+                      <Database size={40} className="text-mokebo-muted" />
                     </div>
                     <p className="font-bold text-mokebo-muted max-w-xs mx-auto">Importiere eine Liste mit SKUs und EK-Preisen oder füge Einträge manuell hinzu.</p>
                   </div>
@@ -1192,7 +1192,7 @@ export default function App() {
                                       </span>
                                     ))
                                   ) : (
-                                    <span className="text-[10px] text-mokebo-border italic">Keine Aliases</span>
+                                    <span className="text-[10px] text-mokebo-muted italic">Keine Aliases</span>
                                   )}
                                   <button 
                                     onClick={() => setEditingMaster(p)}
@@ -1212,14 +1212,14 @@ export default function App() {
                                 <div className="flex items-center justify-end gap-2">
                                   <button 
                                     onClick={() => setEditingMaster(p)}
-                                    className="p-2 text-mokebo-border hover:text-mokebo-mint hover:bg-mokebo-mint/15 rounded-lg transition-all"
+                                    className="p-2 text-mokebo-muted hover:text-mokebo-mint hover:bg-mokebo-mint/15 rounded-lg transition-all"
                                     title="Bearbeiten"
                                   >
                                     <RefreshCw size={14} />
                                   </button>
                                   <button 
                                     onClick={() => deleteMasterEntry(p.id)}
-                                    className="p-2 text-mokebo-border hover:text-rose-600 hover:bg-rose-500/15 rounded-lg transition-all"
+                                    className="p-2 text-mokebo-muted hover:text-rose-600 hover:bg-rose-500/15 rounded-lg transition-all"
                                     title="Löschen"
                                   >
                                     <Trash2 size={14} />
@@ -1273,14 +1273,14 @@ export default function App() {
                             type="date" 
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
-                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-border cursor-pointer"
+                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-muted cursor-pointer"
                           />
-                          <span className="text-mokebo-border text-[10px] font-black">—</span>
+                          <span className="text-mokebo-muted text-[10px] font-black">—</span>
                           <input 
                             type="date" 
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
-                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-border cursor-pointer"
+                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-muted cursor-pointer"
                           />
                         </div>
                         {(startDate || endDate) && (
@@ -1382,26 +1382,26 @@ export default function App() {
                                   {item.menge}
                                 </span>
                               </td>
-                              <td className="py-5 px-4 text-right font-mono text-xs text-mokebo-muted">{fmtEur(item.einzelpreis)}</td>
+                              <td className="py-5 px-4 text-right font-mono text-xs text-mokebo-fg">{fmtEur(item.einzelpreis)}</td>
                               <td className="py-5 px-4 text-center">
                                 {item.rabatt && item.rabatt > 0 ? (
                                   <span className="text-[10px] font-black text-mokebo-mint bg-mokebo-mint/15 border border-mokebo-mint/30 px-2.5 py-1 rounded-lg">
                                     -{item.rabatt}%
                                   </span>
                                 ) : (
-                                  <span className="text-[10px] text-mokebo-border">—</span>
+                                  <span className="text-[10px] text-mokebo-muted">—</span>
                                 )}
                               </td>
                               <td className="py-5 px-4 text-right bg-mokebo-mint/15">
                                 <span className="font-mono font-black text-mokebo-mint text-sm">{fmtEur(item.sollWert || 0)}</span>
                               </td>
                               <td className="py-5 px-4 text-right bg-white/5">
-                                <span className={`font-mono font-black text-sm ${item.hasError ? 'text-rose-600' : 'text-mokebo-border'}`}>
+                                <span className={`font-mono font-black text-sm ${item.hasError ? 'text-rose-400' : 'text-mokebo-fg'}`}>
                                   {fmtEur(item.istWert)}
                                 </span>
                               </td>
                               <td className="py-5 px-8 text-right">
-                                <span className={`font-mono text-[11px] font-black px-3 py-1.5 rounded-xl ${Math.abs(item.diff || 0) <= 0.01 ? 'bg-mokebo-surface2 text-mokebo-muted' : (item.diff || 0) > 0 ? 'bg-rose-500/20 text-rose-700' : 'bg-emerald-500/20 text-emerald-700'}`}>
+                                <span className={`font-mono text-[11px] font-black px-3 py-1.5 rounded-xl ${Math.abs(item.diff || 0) <= 0.01 ? 'bg-mokebo-surface2 text-mokebo-fg' : (item.diff || 0) > 0 ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
                                   {(item.diff || 0) > 0 ? '+' : ''}{fmtEur(item.diff || 0)}
                                 </span>
                               </td>
@@ -1502,7 +1502,7 @@ export default function App() {
                       {sortedMonths.map(month => (
                         <div key={month} className="group">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-xs font-black text-mokebo-border">{month}</span>
+                            <span className="text-xs font-black text-mokebo-muted">{month}</span>
                             <span className="font-mono text-xs font-black text-mokebo-fg">{fmtEur(analysis.monthly[month].sum)} €</span>
                           </div>
                           <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
@@ -1513,7 +1513,7 @@ export default function App() {
                             />
                           </div>
                           <div className="flex justify-between mt-1.5">
-                            <span className="text-[9px] font-black text-mokebo-border uppercase tracking-widest">{analysis.monthly[month].count} POS.</span>
+                            <span className="text-[9px] font-black text-mokebo-muted uppercase tracking-widest">{analysis.monthly[month].count} POS.</span>
                             {analysis.monthly[month].retouren > 0 && (
                               <span className="text-[9px] font-black text-rose-400 uppercase tracking-widest">{analysis.monthly[month].retouren} RET.</span>
                             )}
@@ -1574,7 +1574,7 @@ export default function App() {
                       <p className="text-[10px] text-mokebo-muted font-bold uppercase tracking-widest">Stammdaten & Aliases</p>
                     </div>
                   </div>
-                  <button onClick={() => setEditingMaster(null)} className="text-mokebo-border hover:text-mokebo-muted transition-colors">
+                  <button onClick={() => setEditingMaster(null)} className="text-mokebo-muted hover:text-mokebo-muted transition-colors">
                     <X size={24} />
                   </button>
                 </div>
@@ -1622,7 +1622,7 @@ export default function App() {
                               const newAliases = (editingMaster.aliases || []).filter((_, i) => i !== idx);
                               setEditingMaster({...editingMaster, aliases: newAliases});
                             }}
-                            className="p-2 text-mokebo-border hover:text-rose-500 transition-colors"
+                            className="p-2 text-mokebo-muted hover:text-rose-500 transition-colors"
                           >
                             <Trash2 size={14} />
                           </button>
@@ -1641,7 +1641,7 @@ export default function App() {
                 <div className="px-8 py-6 bg-white/5 border-t border-mokebo-border/50 flex justify-end gap-3">
                   <button 
                     onClick={() => setEditingMaster(null)}
-                    className="px-6 py-3 text-xs font-bold text-mokebo-muted hover:text-mokebo-border transition-colors"
+                    className="px-6 py-3 text-xs font-bold text-mokebo-muted hover:text-mokebo-muted transition-colors"
                   >
                     Abbrechen
                   </button>
@@ -1684,7 +1684,7 @@ export default function App() {
                       <p className="text-[10px] text-mokebo-muted font-bold uppercase tracking-widest">Mapping für {mappingType === 'master' ? 'Stammdaten' : 'Rechnung'}</p>
                     </div>
                   </div>
-                  <button onClick={() => setIsMappingOpen(false)} className="text-mokebo-border hover:text-mokebo-muted transition-colors">
+                  <button onClick={() => setIsMappingOpen(false)} className="text-mokebo-muted hover:text-mokebo-muted transition-colors">
                     <X size={24} />
                   </button>
                 </div>
@@ -1707,7 +1707,7 @@ export default function App() {
                           setInvoiceMapping(guessInvoiceMapping(row));
                         }
                       }}
-                      className="w-full px-4 py-3 border border-mokebo-mint/30 rounded-xl text-sm font-bold bg-mokebo-surface outline-none focus:ring-4 focus:ring-mokebo-mint/20 transition-all text-mokebo-border"
+                      className="w-full px-4 py-3 border border-mokebo-mint/30 rounded-xl text-sm font-bold bg-mokebo-surface outline-none focus:ring-4 focus:ring-mokebo-mint/20 transition-all text-mokebo-muted"
                     >
                       {rawRows.slice(0, 10).map((row, idx) => (
                         <option key={idx} value={idx}>
@@ -1725,7 +1725,7 @@ export default function App() {
                       {rawRows[headerRowIdx]?.map((header, idx) => (
                         <div key={idx} className="p-3 border border-mokebo-border rounded-xl bg-white/5">
                           <div className="text-[9px] font-black text-mokebo-mint uppercase mb-1">Spalte {String.fromCharCode(65 + idx)}</div>
-                          <div className="text-[11px] font-bold text-mokebo-border truncate">{header || `(Leer)`}</div>
+                          <div className="text-[11px] font-bold text-mokebo-muted truncate">{header || `(Leer)`}</div>
                         </div>
                       ))}
                     </div>
@@ -1847,7 +1847,7 @@ export default function App() {
                 <div className="px-8 py-6 border-t border-mokebo-border/50 bg-white/5 flex justify-end gap-3 flex-shrink-0">
                   <button 
                     onClick={() => setIsMappingOpen(false)}
-                    className="px-6 py-3 text-xs font-bold text-mokebo-muted hover:text-mokebo-border transition-colors"
+                    className="px-6 py-3 text-xs font-bold text-mokebo-muted hover:text-mokebo-muted transition-colors"
                   >
                     Abbrechen
                   </button>
@@ -1880,7 +1880,7 @@ export default function App() {
             <a 
               href="/magma_auditor_project.tar.gz" 
               download="magma_auditor_project.tar.gz"
-              className="flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-100 hover:bg-emerald-500/20 text-emerald-700 px-3 py-1.5 rounded-xl font-bold transition-all shadow-sm"
+              className="flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/30 hover:bg-emerald-500/20 text-emerald-400 px-3 py-1.5 rounded-xl font-bold transition-all shadow-sm"
             >
               <Download size={14} />
               Als .tar.gz (Komplettes Projekt)
