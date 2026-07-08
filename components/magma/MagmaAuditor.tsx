@@ -715,13 +715,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#1A1A1A] font-sans selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="min-h-screen bg-mokebo-dark text-mokebo-fg font-sans selection:bg-mokebo-mint/30 selection:text-mokebo-dark">
       <div className="max-w-screen-xl mx-auto px-4 py-8 md:px-8">
         
         {/* ── HEADER ── */}
-        <header className="no-print mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-white border border-gray-200/60 rounded-3xl px-8 py-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-sm">
+        <header className="no-print mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-mokebo-surface border border-mokebo-border rounded-3xl px-8 py-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-sm">
           <div className="flex items-center gap-5">
-            <div className="w-14 h-14 rounded-2xl bg-gray-900 text-white flex items-center justify-center shadow-lg shadow-gray-200">
+            <div className="w-14 h-14 rounded-2xl bg-mokebo-green text-white flex items-center justify-center shadow-lg shadow-black/30">
               <TrendingUp size={28} strokeWidth={2.5} />
             </div>
             <div>
@@ -731,22 +731,22 @@ export default function App() {
                   <motion.span 
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-[10px] font-black text-amber-600 bg-amber-50 border border-amber-100 px-2.5 py-1 rounded-full flex items-center gap-1.5"
+                    className="text-[10px] font-black text-amber-600 bg-amber-500/15 border border-amber-500/30 px-2.5 py-1 rounded-full flex items-center gap-1.5"
                   >
                     <RefreshCw size={10} className="animate-spin" /> SYNCING
                   </motion.span>
                 ) : (
-                  <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                  <span className="text-[10px] font-black text-emerald-600 bg-emerald-500/15 border border-emerald-100 px-2.5 py-1 rounded-full flex items-center gap-1.5">
                     <CheckCircle2 size={10} /> READY
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-400 font-medium mt-0.5">Rechnungsprüfung & Aktions-Management</p>
+              <p className="text-sm text-mokebo-muted font-medium mt-0.5">Rechnungsprüfung & Aktions-Management</p>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
-            <nav className="flex bg-gray-100/80 p-1.5 rounded-2xl">
+            <nav className="flex bg-mokebo-surface2/80 p-1.5 rounded-2xl">
               {[
                 { id: 'audit', label: 'AUDIT', icon: FileText },
                 { id: 'rabatte', label: 'RABATTE', icon: Tag },
@@ -758,7 +758,7 @@ export default function App() {
                     setView(v.id as any);
                     setShowClearMasterConfirm(false);
                   }}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 ${view === v.id ? 'bg-white text-gray-900 shadow-md shadow-gray-200/50' : 'text-gray-400 hover:text-gray-600'}`}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 ${view === v.id ? 'bg-mokebo-surface text-mokebo-fg shadow-md shadow-black/30/50' : 'text-mokebo-muted hover:text-mokebo-border'}`}
                 >
                   <v.icon size={14} />
                   {v.label}
@@ -768,7 +768,7 @@ export default function App() {
             {view === 'audit' && (
               <button 
                 onClick={() => fileRef.current?.click()}
-                className="flex items-center gap-2 bg-gray-900 text-white text-xs font-bold px-6 py-3 rounded-2xl hover:bg-gray-800 active:scale-95 transition-all shadow-xl shadow-gray-200"
+                className="flex items-center gap-2 bg-mokebo-green text-white text-xs font-bold px-6 py-3 rounded-2xl hover:bg-mokebo-dark active:scale-95 transition-all shadow-xl shadow-black/30"
               >
                 <Upload size={16} strokeWidth={2.5} />
                 XLSX LADEN
@@ -788,9 +788,9 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-6"
             >
-              <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm p-8">
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm p-8">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+                  <div className="p-2 bg-mokebo-mint/15 text-mokebo-mint rounded-xl">
                     {editingRuleId ? <RefreshCw size={20} strokeWidth={3} /> : <Plus size={20} strokeWidth={3} />}
                   </div>
                   <h2 className="font-black text-lg tracking-tight">
@@ -800,35 +800,35 @@ export default function App() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                   <div className="space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Bezeichnung</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted ml-1">Bezeichnung</label>
                     <input 
                       type="text" 
                       placeholder="z.B. Winter-Aktion 2025"
                       value={newRule.label} 
                       onChange={e => setNewRule(r => ({...r, label: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-indigo-50 bg-gray-50/50 transition-all font-medium" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Von</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted ml-1">Von</label>
                     <input 
                       type="date" 
                       value={newRule.from} 
                       onChange={e => setNewRule(r => ({...r, from: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-indigo-50 bg-gray-50/50 transition-all font-medium" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Bis</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted ml-1">Bis</label>
                     <input 
                       type="date" 
                       value={newRule.to} 
                       onChange={e => setNewRule(r => ({...r, to: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-indigo-50 bg-gray-50/50 transition-all font-medium" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Rabatt %</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted ml-1">Rabatt %</label>
                     <div className="relative">
                       <input 
                         type="number" 
@@ -836,25 +836,25 @@ export default function App() {
                         placeholder="25"
                         value={newRule.percent} 
                         onChange={e => setNewRule(r => ({...r, percent: e.target.value}))}
-                        className="w-full px-4 py-3.5 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-indigo-50 bg-gray-50/50 transition-all font-bold font-mono" 
+                        className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono" 
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-gray-300">%</span>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-border">%</span>
                     </div>
                   </div>
                   <div className="md:col-span-2 space-y-3">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted ml-1">
                       SKU-Auswahl <span className="font-normal normal-case opacity-60">(Wähle betroffene SKUs aus oder gib sie manuell ein)</span>
                     </label>
                     
                     {masterPrices.length > 0 ? (
-                      <div className="border border-gray-100 rounded-2xl bg-gray-50/30 overflow-hidden">
-                        <div className="p-3 border-b border-gray-100 bg-white flex items-center gap-3">
+                      <div className="border border-mokebo-border rounded-2xl bg-white/5 overflow-hidden">
+                        <div className="p-3 border-b border-mokebo-border bg-mokebo-surface flex items-center gap-3">
                           <div className="relative flex-1">
-                            <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-mokebo-muted" />
                             <input 
                               type="text" 
                               placeholder="SKUs filtern..." 
-                              className="w-full pl-8 pr-3 py-1.5 text-xs border-none outline-none bg-gray-50 rounded-lg"
+                              className="w-full pl-8 pr-3 py-1.5 text-xs border-none outline-none bg-white/5 rounded-lg"
                               onChange={(e) => {
                                 const term = e.target.value.toLowerCase();
                                 const items = document.querySelectorAll('.sku-select-item');
@@ -871,13 +871,13 @@ export default function App() {
                                 const allSkus = masterPrices.map(p => p.sku).join(', ');
                                 setNewRule(r => ({...r, skuFilter: allSkus}));
                               }}
-                              className="text-[9px] font-black text-indigo-600 hover:text-indigo-800 uppercase tracking-widest"
+                              className="text-[9px] font-black text-mokebo-mint hover:text-mokebo-mint uppercase tracking-widest"
                             >
                               Alle
                             </button>
                             <button 
                               onClick={() => setNewRule(r => ({...r, skuFilter: ''}))}
-                              className="text-[9px] font-black text-gray-400 hover:text-rose-500 uppercase tracking-widest"
+                              className="text-[9px] font-black text-mokebo-muted hover:text-rose-500 uppercase tracking-widest"
                             >
                               Leeren
                             </button>
@@ -890,7 +890,7 @@ export default function App() {
                               <div 
                                 key={p.id} 
                                 data-sku={p.sku}
-                                className="sku-select-item flex items-center gap-2 p-2 rounded-xl hover:bg-white transition-colors cursor-pointer group"
+                                className="sku-select-item flex items-center gap-2 p-2 rounded-xl hover:bg-mokebo-surface transition-colors cursor-pointer group"
                                 onClick={() => {
                                   const current = newRule.skuFilter.split(',').map(s => s.trim()).filter(s => s !== '');
                                   const idx = current.findIndex(s => s.toLowerCase() === p.sku.toLowerCase());
@@ -902,18 +902,18 @@ export default function App() {
                                   setNewRule(r => ({...r, skuFilter: current.join(', ')}));
                                 }}
                               >
-                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-indigo-600 border-indigo-600' : 'bg-white border-gray-200 group-hover:border-indigo-300'}`}>
+                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${isSelected ? 'bg-mokebo-green border-mokebo-mint' : 'bg-mokebo-surface border-mokebo-border group-hover:border-mokebo-mint/60'}`}>
                                   {isSelected && <CheckCircle2 size={10} className="text-white" />}
                                 </div>
-                                <span className={`font-mono text-[11px] truncate ${isSelected ? 'font-black text-indigo-900' : 'text-gray-500'}`}>{p.sku}</span>
+                                <span className={`font-mono text-[11px] truncate ${isSelected ? 'font-black text-mokebo-mint' : 'text-mokebo-muted'}`}>{p.sku}</span>
                               </div>
                             );
                           })}
                         </div>
                       </div>
                     ) : (
-                      <div className="p-4 border border-dashed border-gray-200 rounded-2xl text-center">
-                        <p className="text-[10px] font-bold text-gray-400">Lade erst Stammdaten hoch, um SKUs bequem auswählen zu können.</p>
+                      <div className="p-4 border border-dashed border-mokebo-border rounded-2xl text-center">
+                        <p className="text-[10px] font-bold text-mokebo-muted">Lade erst Stammdaten hoch, um SKUs bequem auswählen zu können.</p>
                       </div>
                     )}
 
@@ -922,7 +922,7 @@ export default function App() {
                       placeholder="Manuelle Eingabe (z.B. SKU1, SKU2)"
                       value={newRule.skuFilter} 
                       onChange={e => setNewRule(r => ({...r, skuFilter: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-indigo-50 bg-gray-50/50 transition-all font-mono" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-mono" 
                     />
                   </div>
                 </div>
@@ -930,7 +930,7 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   <button 
                     onClick={addRule}
-                    className="flex items-center gap-2 bg-indigo-600 text-white text-xs font-bold px-8 py-4 rounded-2xl hover:bg-indigo-700 active:scale-95 transition-all shadow-lg shadow-indigo-100"
+                    className="flex items-center gap-2 bg-mokebo-green text-white text-xs font-bold px-8 py-4 rounded-2xl hover:bg-mokebo-dark active:scale-95 transition-all shadow-lg shadow-mokebo-mint/10"
                   >
                     <Save size={16} />
                     {editingRuleId ? 'ÄNDERUNGEN SPEICHERN' : 'REGEL SPEICHERN'}
@@ -941,7 +941,7 @@ export default function App() {
                         setEditingRuleId(null);
                         setNewRule(emptyRule());
                       }}
-                      className="px-6 py-4 text-xs font-bold text-gray-400 hover:text-gray-600 transition-colors"
+                      className="px-6 py-4 text-xs font-bold text-mokebo-muted hover:text-mokebo-border transition-colors"
                     >
                       ABBRECHEN
                     </button>
@@ -949,9 +949,9 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm overflow-hidden">
-                <div className="px-8 py-6 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
-                  <h2 className="font-black text-sm uppercase tracking-widest text-gray-400">Aktive Regeln ({discountRules.length})</h2>
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm overflow-hidden">
+                <div className="px-8 py-6 border-b border-mokebo-border/50 bg-white/5 flex items-center justify-between">
+                  <h2 className="font-black text-sm uppercase tracking-widest text-mokebo-muted">Aktive Regeln ({discountRules.length})</h2>
                   <div className="flex items-center gap-3">
                     {discountRules.length > 0 && (
                       <button 
@@ -959,49 +959,49 @@ export default function App() {
                           setDiscountRules([]);
                           syncToLocal(null, []);
                         }}
-                        className="flex items-center gap-2 text-[10px] font-black text-gray-400 hover:text-rose-500 transition-all px-3 py-1.5 rounded-lg hover:bg-rose-50"
+                        className="flex items-center gap-2 text-[10px] font-black text-mokebo-muted hover:text-rose-500 transition-all px-3 py-1.5 rounded-lg hover:bg-rose-500/15"
                       >
                         <Trash2 size={12} />
                         ALLE LÖSCHEN
                       </button>
                     )}
-                    <Info size={16} className="text-gray-300" />
+                    <Info size={16} className="text-mokebo-border" />
                   </div>
                 </div>
                 {discountRules.length === 0 ? (
                   <div className="py-24 text-center">
-                    <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Calendar size={32} className="text-gray-200" />
+                    <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Calendar size={32} className="text-mokebo-border" />
                     </div>
-                    <p className="font-bold text-gray-400">Noch keine Rabattregeln definiert.</p>
+                    <p className="font-bold text-mokebo-muted">Noch keine Rabattregeln definiert.</p>
                   </div>
                 ) : (
-                  <div className="divide-y divide-gray-50">
+                  <div className="divide-y divide-white/5">
                     {discountRules.map(rule => (
                       <motion.div 
                         layout
                         key={rule.id} 
-                        className="flex items-center justify-between px-8 py-6 hover:bg-gray-50/50 group transition-colors"
+                        className="flex items-center justify-between px-8 py-6 hover:bg-white/5 group transition-colors"
                       >
                         <div className="flex items-center gap-6 flex-wrap">
                           <div className="space-y-1">
-                            <span className="font-bold text-sm text-gray-900 block">{rule.label || 'Aktionsrabatt'}</span>
-                            <span className="font-mono text-[10px] text-gray-400 flex items-center gap-1">
+                            <span className="font-bold text-sm text-mokebo-fg block">{rule.label || 'Aktionsrabatt'}</span>
+                            <span className="font-mono text-[10px] text-mokebo-muted flex items-center gap-1">
                               <Calendar size={10} />
                               {fmtDate(rule.from)} – {fmtDate(rule.to)}
                             </span>
                           </div>
                           <div className="flex items-center gap-3">
-                            <span className="font-black text-sm text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100">
+                            <span className="font-black text-sm text-mokebo-mint bg-mokebo-mint/15 px-3 py-1.5 rounded-xl border border-mokebo-mint/30">
                               -{rule.percent}%
                             </span>
                             {rule.skuFilter ? (
-                              <span className="font-mono text-[10px] bg-amber-50 text-amber-600 border border-amber-100 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                              <span className="font-mono text-[10px] bg-amber-500/15 text-amber-600 border border-amber-500/30 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
                                 <Filter size={10} />
                                 {rule.skuFilter}
                               </span>
                             ) : (
-                              <span className="text-[10px] text-gray-400 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-xl">Global</span>
+                              <span className="text-[10px] text-mokebo-muted bg-white/5 border border-mokebo-border px-3 py-1.5 rounded-xl">Global</span>
                             )}
                           </div>
                         </div>
@@ -1012,14 +1012,14 @@ export default function App() {
                               setNewRule({ ...rule });
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
-                            className="w-10 h-10 rounded-xl flex items-center justify-center text-indigo-400 hover:text-indigo-600 bg-indigo-50/50 hover:bg-indigo-50 border border-indigo-100/50 transition-all"
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-mokebo-mint hover:text-mokebo-mint bg-mokebo-mint/15 hover:bg-mokebo-mint/15 border border-mokebo-mint/30 transition-all"
                             title="Bearbeiten"
                           >
                             <RefreshCw size={18} />
                           </button>
                           <button 
                             onClick={() => removeRule(rule.id)}
-                            className="w-10 h-10 rounded-xl flex items-center justify-center text-rose-400 hover:text-rose-600 bg-rose-50/50 hover:bg-rose-50 border border-rose-100/50 transition-all"
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-rose-400 hover:text-rose-600 bg-rose-500/15 hover:bg-rose-500/15 border border-rose-500/30 transition-all"
                             title="Löschen"
                           >
                             <Trash2 size={18} />
@@ -1042,9 +1042,9 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-6"
             >
-              <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm p-8">
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm p-8">
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="p-2 bg-gray-900 text-white rounded-xl">
+                  <div className="p-2 bg-mokebo-green text-white rounded-xl">
                     <Plus size={20} strokeWidth={3} />
                   </div>
                   <h2 className="font-black text-lg tracking-tight">Manueller Stammdaten-Eintrag</h2>
@@ -1052,17 +1052,17 @@ export default function App() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <div className="space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">SKU / Artikelnummer</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted ml-1">SKU / Artikelnummer</label>
                     <input 
                       type="text" 
                       placeholder="z.B. LP4trB_USBC_schw"
                       value={newMaster.sku} 
                       onChange={e => setNewMaster(m => ({...m, sku: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-indigo-50 bg-gray-50/50 transition-all font-mono font-bold" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-mono font-bold" 
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">EK-Preis (Netto)</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted ml-1">EK-Preis (Netto)</label>
                     <div className="relative">
                       <input 
                         type="number" 
@@ -1070,16 +1070,16 @@ export default function App() {
                         placeholder="0.00"
                         value={newMaster.ek || ''} 
                         onChange={e => setNewMaster(m => ({...m, ek: parseNum(e.target.value)}))}
-                        className="w-full px-4 py-3.5 border border-gray-100 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-indigo-50 bg-gray-50/50 transition-all font-bold font-mono" 
+                        className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono" 
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-gray-300">€</span>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-border">€</span>
                     </div>
                   </div>
                   <div className="flex items-end">
                     <button 
                       onClick={() => saveMasterEntry(newMaster)}
                       disabled={!newMaster.sku || !newMaster.ek}
-                      className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white text-xs font-bold px-8 py-4 rounded-2xl hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 transition-all shadow-lg shadow-gray-100"
+                      className="w-full flex items-center justify-center gap-2 bg-mokebo-green text-white text-xs font-bold px-8 py-4 rounded-2xl hover:bg-mokebo-dark disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 transition-all shadow-lg shadow-black/20"
                     >
                       <Save size={16} />
                       EINTRAG SPEICHERN
@@ -1088,32 +1088,32 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm overflow-hidden">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between px-8 py-6 border-b border-gray-50 bg-gray-50/30 gap-4">
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm overflow-hidden">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between px-8 py-6 border-b border-mokebo-border/50 bg-white/5 gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="p-2 bg-gray-900 text-white rounded-xl">
+                    <div className="p-2 bg-mokebo-green text-white rounded-xl">
                       <Database size={20} />
                     </div>
                     <div>
-                      <h2 className="font-black text-sm uppercase tracking-widest text-gray-400">STAMMDATEN LISTE</h2>
-                      <p className="text-[10px] text-gray-400 font-bold mt-0.5">{masterPrices.length} Preise gespeichert</p>
+                      <h2 className="font-black text-sm uppercase tracking-widest text-mokebo-muted">STAMMDATEN LISTE</h2>
+                      <p className="text-[10px] text-mokebo-muted font-bold mt-0.5">{masterPrices.length} Preise gespeichert</p>
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="relative">
-                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mokebo-muted" />
                       <input 
                         type="text" 
                         placeholder="SKU oder Alias suchen..." 
                         value={masterSearch}
                         onChange={e => setMasterSearch(e.target.value)}
-                        className="pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-gray-100 w-full sm:w-48"
+                        className="pl-9 pr-4 py-2 border border-mokebo-border rounded-xl text-xs outline-none focus:ring-2 focus:ring-gray-100 w-full sm:w-48"
                       />
                     </div>
                     {masterPrices.length > 0 && (
                       showClearMasterConfirm ? (
-                        <div className="flex items-center gap-2 bg-rose-50 border border-rose-100 px-3 py-1.5 rounded-xl text-[10px] font-black text-rose-600">
+                        <div className="flex items-center gap-2 bg-rose-500/15 border border-rose-500/30 px-3 py-1.5 rounded-xl text-[10px] font-black text-rose-600">
                           <span>Wirklich alle löschen?</span>
                           <button 
                             onClick={() => {
@@ -1127,7 +1127,7 @@ export default function App() {
                           </button>
                           <button 
                             onClick={() => setShowClearMasterConfirm(false)}
-                            className="bg-white border border-gray-200 text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-50 transition-all font-black"
+                            className="bg-mokebo-surface border border-mokebo-border text-mokebo-muted px-2 py-1 rounded-lg hover:bg-white/5 transition-all font-black"
                           >
                             NEIN
                           </button>
@@ -1135,7 +1135,7 @@ export default function App() {
                       ) : (
                         <button 
                           onClick={() => setShowClearMasterConfirm(true)}
-                          className="flex items-center gap-2 text-[10px] font-black text-gray-400 hover:text-rose-500 transition-all px-3 py-2 rounded-xl hover:bg-rose-50 border border-transparent hover:border-rose-100"
+                          className="flex items-center gap-2 text-[10px] font-black text-mokebo-muted hover:text-rose-500 transition-all px-3 py-2 rounded-xl hover:bg-rose-500/15 border border-transparent hover:border-rose-500/30"
                         >
                           <Trash2 size={14} />
                           ALLE LÖSCHEN
@@ -1144,7 +1144,7 @@ export default function App() {
                     )}
                     <button 
                       onClick={() => masterRef.current?.click()}
-                      className="flex items-center gap-2 bg-gray-900 text-white text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-gray-800 transition-all shadow-lg shadow-gray-200"
+                      className="flex items-center gap-2 bg-mokebo-green text-white text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-mokebo-dark transition-all shadow-lg shadow-black/30"
                     >
                       <FileUp size={14} />
                       IMPORTIEREN
@@ -1155,32 +1155,32 @@ export default function App() {
                 
                 {masterPrices.length === 0 ? (
                   <div className="py-32 text-center">
-                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <Database size={40} className="text-gray-200" />
+                    <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Database size={40} className="text-mokebo-border" />
                     </div>
-                    <p className="font-bold text-gray-400 max-w-xs mx-auto">Importiere eine Liste mit SKUs und EK-Preisen oder füge Einträge manuell hinzu.</p>
+                    <p className="font-bold text-mokebo-muted max-w-xs mx-auto">Importiere eine Liste mit SKUs und EK-Preisen oder füge Einträge manuell hinzu.</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="text-[10px] uppercase font-black text-gray-400 border-b border-gray-50 bg-gray-50/20 tracking-widest">
+                        <tr className="text-[10px] uppercase font-black text-mokebo-muted border-b border-mokebo-border/50 bg-white/5 tracking-widest">
                           <th className="py-5 px-8">INTERNE SKU</th>
                           <th className="py-5 px-4">ALIASES (RECHNUNGS-NAMEN)</th>
                           <th className="py-5 px-4 text-right">EK-PREIS</th>
                           <th className="py-5 px-8 text-right">AKTIONEN</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-50">
+                      <tbody className="divide-y divide-white/5">
                         {masterPrices
                           .filter(p => 
                             p.sku.toLowerCase().includes(masterSearch.toLowerCase()) ||
                             p.aliases?.some(a => a.toLowerCase().includes(masterSearch.toLowerCase()))
                           )
                           .map(p => (
-                            <tr key={p.id} className="group hover:bg-gray-50/50 transition-colors">
+                            <tr key={p.id} className="group hover:bg-white/5 transition-colors">
                               <td className="py-5 px-8">
-                                <div className="font-mono font-black text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md inline-block">
+                                <div className="font-mono font-black text-xs text-mokebo-mint bg-mokebo-mint/15 px-2 py-1 rounded-md inline-block">
                                   {p.sku}
                                 </div>
                               </td>
@@ -1188,23 +1188,23 @@ export default function App() {
                                 <div className="flex flex-wrap gap-1.5">
                                   {p.aliases && p.aliases.length > 0 ? (
                                     p.aliases.map((alias, idx) => (
-                                      <span key={idx} className="text-[9px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                                      <span key={idx} className="text-[9px] font-bold text-mokebo-muted bg-mokebo-surface2 px-2 py-0.5 rounded-full">
                                         {alias}
                                       </span>
                                     ))
                                   ) : (
-                                    <span className="text-[10px] text-gray-300 italic">Keine Aliases</span>
+                                    <span className="text-[10px] text-mokebo-border italic">Keine Aliases</span>
                                   )}
                                   <button 
                                     onClick={() => setEditingMaster(p)}
-                                    className="text-[9px] font-black text-indigo-400 hover:text-indigo-600 uppercase tracking-widest ml-1"
+                                    className="text-[9px] font-black text-mokebo-mint hover:text-mokebo-mint uppercase tracking-widest ml-1"
                                   >
                                     + Alias
                                   </button>
                                 </div>
                               </td>
                               <td className="py-5 px-4 text-right">
-                                <div className="font-mono font-black text-sm text-gray-900">{fmtEur(p.ek)} €</div>
+                                <div className="font-mono font-black text-sm text-mokebo-fg">{fmtEur(p.ek)} €</div>
                                 {p.discount !== undefined && p.discount > 0 && (
                                   <div className="text-[9px] font-bold text-emerald-600">-{p.discount}% Rabatt</div>
                                 )}
@@ -1213,14 +1213,14 @@ export default function App() {
                                 <div className="flex items-center justify-end gap-2">
                                   <button 
                                     onClick={() => setEditingMaster(p)}
-                                    className="p-2 text-gray-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                                    className="p-2 text-mokebo-border hover:text-mokebo-mint hover:bg-mokebo-mint/15 rounded-lg transition-all"
                                     title="Bearbeiten"
                                   >
                                     <RefreshCw size={14} />
                                   </button>
                                   <button 
                                     onClick={() => deleteMasterEntry(p.id)}
-                                    className="p-2 text-gray-300 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+                                    className="p-2 text-mokebo-border hover:text-rose-600 hover:bg-rose-500/15 rounded-lg transition-all"
                                     title="Löschen"
                                   >
                                     <Trash2 size={14} />
@@ -1248,46 +1248,46 @@ export default function App() {
             >
               {/* Linke Seite: Tabelle */}
               <div className="lg:col-span-8 space-y-6">
-                <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm overflow-hidden">
-                  <div className="flex items-center justify-between gap-4 px-8 py-6 border-b border-gray-50 bg-gray-50/30">
+                <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm overflow-hidden">
+                  <div className="flex items-center justify-between gap-4 px-8 py-6 border-b border-mokebo-border/50 bg-white/5">
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mokebo-muted" />
                         <input 
                           type="text" 
                           placeholder="SKU oder Auftrag..." 
                           value={auditSearch}
                           onChange={e => setAuditSearch(e.target.value)}
-                          className="pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-[10px] font-black outline-none focus:ring-2 focus:ring-gray-100 w-40"
+                          className="pl-9 pr-4 py-2 border border-mokebo-border rounded-xl text-[10px] font-black outline-none focus:ring-2 focus:ring-gray-100 w-40"
                         />
                       </div>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-mokebo-muted">
                         {visibleItems.length} / {items.length} POSITIONEN {fileName && <span className="opacity-40 ml-2">· {fileName}</span>}
                       </span>
                     </div>
                     
                     <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-2 bg-gray-50/50 p-1 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-mokebo-border">
                         <div className="flex items-center gap-2 px-3">
-                          <Calendar size={12} className="text-gray-400" />
+                          <Calendar size={12} className="text-mokebo-muted" />
                           <input 
                             type="date" 
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
-                            className="text-[10px] font-black bg-transparent outline-none text-gray-600 cursor-pointer"
+                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-border cursor-pointer"
                           />
-                          <span className="text-gray-300 text-[10px] font-black">—</span>
+                          <span className="text-mokebo-border text-[10px] font-black">—</span>
                           <input 
                             type="date" 
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
-                            className="text-[10px] font-black bg-transparent outline-none text-gray-600 cursor-pointer"
+                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-border cursor-pointer"
                           />
                         </div>
                         {(startDate || endDate) && (
                           <button 
                             onClick={() => { setStartDate(''); setEndDate(''); }}
-                            className="px-2 py-1 text-[10px] font-black text-rose-500 hover:bg-rose-50 rounded-lg transition-colors mr-1"
+                            className="px-2 py-1 text-[10px] font-black text-rose-500 hover:bg-rose-500/15 rounded-lg transition-colors mr-1"
                           >
                             RESET
                           </button>
@@ -1297,12 +1297,12 @@ export default function App() {
                       <div className="flex items-center gap-2">
                         <button 
                           onClick={() => setFilterErrors(!filterErrors)}
-                          className={`flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border transition-all ${filterErrors ? 'bg-rose-500 text-white border-rose-500 shadow-lg shadow-rose-100' : 'bg-white text-gray-400 border-gray-100 hover:border-gray-200'}`}
+                          className={`flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border transition-all ${filterErrors ? 'bg-rose-500/150 text-white border-rose-500 shadow-lg shadow-rose-100' : 'bg-mokebo-surface text-mokebo-muted border-mokebo-border hover:border-mokebo-border'}`}
                         >
                           <Filter size={12} strokeWidth={3} />
                           NUR FEHLER
                           {analysis.errors > 0 && (
-                            <span className={`ml-1 px-1.5 py-0.5 rounded-md ${filterErrors ? 'bg-rose-400' : 'bg-rose-100 text-rose-600'}`}>
+                            <span className={`ml-1 px-1.5 py-0.5 rounded-md ${filterErrors ? 'bg-rose-400' : 'bg-rose-500/20 text-rose-600'}`}>
                               {analysis.errors}
                             </span>
                           )}
@@ -1310,7 +1310,7 @@ export default function App() {
                         {items.length > 0 && (
                           <button 
                             onClick={() => setItems([])}
-                            className="flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border border-gray-100 text-gray-400 hover:text-rose-500 hover:border-rose-100 transition-all"
+                            className="flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border border-mokebo-border text-mokebo-muted hover:text-rose-500 hover:border-rose-500/30 transition-all"
                             title="Liste leeren"
                           >
                             <Trash2 size={12} />
@@ -1324,16 +1324,16 @@ export default function App() {
                   <div className="overflow-x-auto">
                     {items.length === 0 ? (
                       <div className="py-32 flex flex-col items-center gap-6 text-center">
-                        <div className="w-24 h-24 bg-gray-50 rounded-3xl flex items-center justify-center text-gray-100">
+                        <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center text-white/80">
                           <FileUp size={48} />
                         </div>
                         <div className="space-y-2">
                           <p className="font-black text-xl tracking-tight">Audit starten</p>
-                          <p className="text-sm text-gray-400 max-w-xs mx-auto">Lade eine Hersteller-Rechnung hoch, um Preise und Rabatte automatisch zu prüfen.</p>
+                          <p className="text-sm text-mokebo-muted max-w-xs mx-auto">Lade eine Hersteller-Rechnung hoch, um Preise und Rabatte automatisch zu prüfen.</p>
                         </div>
                         <button 
                           onClick={() => fileRef.current?.click()}
-                          className="bg-gray-900 text-white text-xs font-bold px-8 py-4 rounded-2xl hover:bg-gray-800 transition-all shadow-xl shadow-gray-200"
+                          className="bg-mokebo-green text-white text-xs font-bold px-8 py-4 rounded-2xl hover:bg-mokebo-dark transition-all shadow-xl shadow-black/30"
                         >
                           DATEI AUSWÄHLEN
                         </button>
@@ -1341,68 +1341,68 @@ export default function App() {
                     ) : (
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="text-[10px] uppercase font-black text-gray-400 border-b border-gray-50 bg-gray-50/20 tracking-widest">
+                          <tr className="text-[10px] uppercase font-black text-mokebo-muted border-b border-mokebo-border/50 bg-white/5 tracking-widest">
                             <th className="py-5 px-8">AUFTRAG / DATUM</th>
                             <th className="py-5 px-4">SKU</th>
                             <th className="py-5 px-4 text-center">MENGE</th>
                             <th className="py-5 px-4 text-right">EK/STK</th>
                             <th className="py-5 px-4 text-center">RABATT</th>
-                            <th className="py-5 px-4 text-right bg-indigo-50/20 text-indigo-600">SOLL (€)</th>
-                            <th className="py-5 px-4 text-right bg-gray-50/20">IST (€)</th>
+                            <th className="py-5 px-4 text-right bg-mokebo-mint/15 text-mokebo-mint">SOLL (€)</th>
+                            <th className="py-5 px-4 text-right bg-white/5">IST (€)</th>
                             <th className="py-5 px-8 text-right">DIFF.</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
+                        <tbody className="divide-y divide-white/5">
                           {visibleItems.map(item => (
-                            <tr key={item.id} className={`group transition-colors ${item.hasError ? 'bg-rose-50/30' : 'hover:bg-gray-50/30'} ${item.isSpecialItem ? 'opacity-40 grayscale-[0.5]' : ''} ${(item as any).notAuditable ? 'bg-gray-50/20' : ''}`}>
+                            <tr key={item.id} className={`group transition-colors ${item.hasError ? 'bg-rose-500/15' : 'hover:bg-white/5'} ${item.isSpecialItem ? 'opacity-40 grayscale-[0.5]' : ''} ${(item as any).notAuditable ? 'bg-white/5' : ''}`}>
                               <td className="py-5 px-8">
-                                <div className="font-mono text-xs font-bold text-gray-900">
+                                <div className="font-mono text-xs font-bold text-mokebo-fg">
                                   {item.auftragId || '–'}
-                                  {item.bagRg && <span className="text-[9px] text-gray-400 font-normal ml-2 opacity-70">RG: {item.bagRg}</span>}
+                                  {item.bagRg && <span className="text-[9px] text-mokebo-muted font-normal ml-2 opacity-70">RG: {item.bagRg}</span>}
                                 </div>
-                                <div className="text-[10px] text-gray-400 font-medium mt-1 flex items-center gap-1">
+                                <div className="text-[10px] text-mokebo-muted font-medium mt-1 flex items-center gap-1">
                                   <Calendar size={10} />
                                   {fmtDate(item.date)}
                                 </div>
                               </td>
                               <td className="py-5 px-4">
-                                <div className="font-mono font-black text-xs text-gray-800">{item.sku}</div>
+                                <div className="font-mono font-black text-xs text-mokebo-fg">{item.sku}</div>
                                 {(item as any).notAuditable && (
-                                  <div className="text-[8px] font-black text-amber-500 uppercase tracking-tighter mt-1 bg-amber-50 px-1.5 py-0.5 rounded inline-block border border-amber-100">
+                                  <div className="text-[8px] font-black text-amber-500 uppercase tracking-tighter mt-1 bg-amber-500/15 px-1.5 py-0.5 rounded inline-block border border-amber-500/30">
                                     Keine Stammpreis-Zuordnung
                                   </div>
                                 )}
                                 {item.isSpecialItem && (
-                                  <div className="text-[8px] font-black text-gray-400 uppercase tracking-tighter mt-1 bg-gray-100 px-1.5 py-0.5 rounded inline-block">
+                                  <div className="text-[8px] font-black text-mokebo-muted uppercase tracking-tighter mt-1 bg-mokebo-surface2 px-1.5 py-0.5 rounded inline-block">
                                     Gutschrift / GWL
                                   </div>
                                 )}
                               </td>
                               <td className="py-5 px-4 text-center">
-                                <span className={`font-mono font-black text-sm ${item.menge < 0 ? 'text-rose-500' : 'text-gray-900'}`}>
+                                <span className={`font-mono font-black text-sm ${item.menge < 0 ? 'text-rose-500' : 'text-mokebo-fg'}`}>
                                   {item.menge}
                                 </span>
                               </td>
-                              <td className="py-5 px-4 text-right font-mono text-xs text-gray-500">{fmtEur(item.einzelpreis)}</td>
+                              <td className="py-5 px-4 text-right font-mono text-xs text-mokebo-muted">{fmtEur(item.einzelpreis)}</td>
                               <td className="py-5 px-4 text-center">
                                 {item.rabatt && item.rabatt > 0 ? (
-                                  <span className="text-[10px] font-black text-indigo-600 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-lg">
+                                  <span className="text-[10px] font-black text-mokebo-mint bg-mokebo-mint/15 border border-mokebo-mint/30 px-2.5 py-1 rounded-lg">
                                     -{item.rabatt}%
                                   </span>
                                 ) : (
-                                  <span className="text-[10px] text-gray-300">—</span>
+                                  <span className="text-[10px] text-mokebo-border">—</span>
                                 )}
                               </td>
-                              <td className="py-5 px-4 text-right bg-indigo-50/10">
-                                <span className="font-mono font-black text-indigo-600 text-sm">{fmtEur(item.sollWert || 0)}</span>
+                              <td className="py-5 px-4 text-right bg-mokebo-mint/15">
+                                <span className="font-mono font-black text-mokebo-mint text-sm">{fmtEur(item.sollWert || 0)}</span>
                               </td>
-                              <td className="py-5 px-4 text-right bg-gray-50/10">
-                                <span className={`font-mono font-black text-sm ${item.hasError ? 'text-rose-600' : 'text-gray-700'}`}>
+                              <td className="py-5 px-4 text-right bg-white/5">
+                                <span className={`font-mono font-black text-sm ${item.hasError ? 'text-rose-600' : 'text-mokebo-border'}`}>
                                   {fmtEur(item.istWert)}
                                 </span>
                               </td>
                               <td className="py-5 px-8 text-right">
-                                <span className={`font-mono text-[11px] font-black px-3 py-1.5 rounded-xl ${Math.abs(item.diff || 0) <= 0.01 ? 'bg-gray-100 text-gray-400' : (item.diff || 0) > 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                                <span className={`font-mono text-[11px] font-black px-3 py-1.5 rounded-xl ${Math.abs(item.diff || 0) <= 0.01 ? 'bg-mokebo-surface2 text-mokebo-muted' : (item.diff || 0) > 0 ? 'bg-rose-500/20 text-rose-700' : 'bg-emerald-500/20 text-emerald-700'}`}>
                                   {(item.diff || 0) > 0 ? '+' : ''}{fmtEur(item.diff || 0)}
                                 </span>
                               </td>
@@ -1418,23 +1418,23 @@ export default function App() {
               {/* Rechte Seite: Sidebar */}
               <div className="lg:col-span-4 space-y-6">
                 {/* Bilanz-Card */}
-                <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm p-8">
-                  <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
-                    <TrendingUp size={14} className="text-indigo-500" /> BILANZ ÜBERSICHT
+                <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm p-8">
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-6 flex items-center gap-2">
+                    <TrendingUp size={14} className="text-mokebo-mint" /> BILANZ ÜBERSICHT
                   </h3>
                   
                   <div className="space-y-5">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-bold text-gray-400">Soll (Erwartet)</span>
-                      <span className="font-mono font-black text-indigo-600">{fmtEur(analysis.totalSoll)} €</span>
+                      <span className="text-sm font-bold text-mokebo-muted">Soll (Erwartet)</span>
+                      <span className="font-mono font-black text-mokebo-mint">{fmtEur(analysis.totalSoll)} €</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-bold text-gray-400">Ist (Rechnung)</span>
-                      <span className="font-mono font-black text-gray-800">{fmtEur(analysis.totalIst)} €</span>
+                      <span className="text-sm font-bold text-mokebo-muted">Ist (Rechnung)</span>
+                      <span className="font-mono font-black text-mokebo-fg">{fmtEur(analysis.totalIst)} €</span>
                     </div>
                     
-                    <div className="pt-6 mt-2 border-t border-gray-50">
-                      <div className="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-2">Differenz</div>
+                    <div className="pt-6 mt-2 border-t border-mokebo-border/50">
+                      <div className="text-[10px] font-black uppercase text-mokebo-muted tracking-widest mb-2">Differenz</div>
                       <div className={`font-mono text-4xl font-black tracking-tighter ${Math.abs(analysis.diff) <= 0.01 ? 'text-emerald-600' : analysis.diff > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
                         {analysis.diff > 0 ? '+' : ''}{fmtEur(analysis.diff)} €
                       </div>
@@ -1444,17 +1444,17 @@ export default function App() {
                   {(analysis.errors > 0 || analysis.retouren > 0 || analysis.missingSkus > 0) && (
                     <div className="mt-8 space-y-3">
                       {analysis.missingSkus > 0 && (
-                        <div className="flex items-center gap-3 text-xs font-black text-amber-600 bg-amber-50 rounded-2xl px-4 py-3 border border-amber-100">
+                        <div className="flex items-center gap-3 text-xs font-black text-amber-600 bg-amber-500/15 rounded-2xl px-4 py-3 border border-amber-500/30">
                           <Search size={16} /> {analysis.missingSkus} ohne SKU (nicht prüfbar)
                         </div>
                       )}
                       {analysis.errors > 0 && (
-                        <div className="flex items-center gap-3 text-xs font-black text-rose-600 bg-rose-50 rounded-2xl px-4 py-3 border border-rose-100">
+                        <div className="flex items-center gap-3 text-xs font-black text-rose-600 bg-rose-500/15 rounded-2xl px-4 py-3 border border-rose-500/30">
                           <AlertTriangle size={16} /> {analysis.errors} Preisabweichung{analysis.errors > 1 ? 'en' : ''}
                         </div>
                       )}
                       {analysis.retouren > 0 && (
-                        <div className="flex items-center gap-3 text-xs font-black text-gray-500 bg-gray-50 rounded-2xl px-4 py-3 border border-gray-100">
+                        <div className="flex items-center gap-3 text-xs font-black text-mokebo-muted bg-white/5 rounded-2xl px-4 py-3 border border-mokebo-border">
                           <Undo2 size={16} /> {analysis.retouren} Retoure{analysis.retouren > 1 ? 'n' : ''}
                         </div>
                       )}
@@ -1464,14 +1464,14 @@ export default function App() {
 
                 {/* Rechnungs-Salden Card */}
                 {Object.keys(analysis.invoiceSums || {}).length > 0 && (
-                  <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border-indigo-50">
+                  <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border-mokebo-mint/20">
                     <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-[10px] font-black uppercase tracking-widest text-indigo-600 flex items-center gap-2">
-                        <FileText size={14} className="text-indigo-500" /> RECHNUNGSSUMMEN (AVISEN)
+                      <h3 className="text-[10px] font-black uppercase tracking-widest text-mokebo-mint flex items-center gap-2">
+                        <FileText size={14} className="text-mokebo-mint" /> RECHNUNGSSUMMEN (AVISEN)
                       </h3>
                       <button 
                         onClick={downloadInvoiceSumsCsv}
-                        className="px-3 py-1.5 text-[10px] font-black text-indigo-600 hover:text-white hover:bg-indigo-600 bg-indigo-50 border border-indigo-100 rounded-xl transition-all flex items-center gap-1.5"
+                        className="px-3 py-1.5 text-[10px] font-black text-mokebo-mint hover:text-white hover:bg-mokebo-green bg-mokebo-mint/15 border border-mokebo-mint/30 rounded-xl transition-all flex items-center gap-1.5"
                         title="Rechnungssummen als CSV herunterladen"
                       >
                         <Download size={12} /> HERUNTERLADEN
@@ -1479,12 +1479,12 @@ export default function App() {
                     </div>
                     <div className="space-y-3 max-h-[250px] overflow-y-auto pr-1">
                       {Object.entries(analysis.invoiceSums as Record<string, { sum: number, count: number }>).map(([rgNum, info]) => (
-                        <div key={rgNum} className="flex justify-between items-center py-2.5 border-b border-gray-50 last:border-0 hover:bg-gray-50/40 rounded-lg px-2 -mx-2 transition-colors">
+                        <div key={rgNum} className="flex justify-between items-center py-2.5 border-b border-mokebo-border/50 last:border-0 hover:bg-white/5 rounded-lg px-2 -mx-2 transition-colors">
                           <div className="flex flex-col">
-                            <span className="text-xs font-black text-gray-800">RG {rgNum || 'Ohne Nr.'}</span>
-                            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">{info.count} Position{info.count > 1 ? 'en' : ''}</span>
+                            <span className="text-xs font-black text-mokebo-fg">RG {rgNum || 'Ohne Nr.'}</span>
+                            <span className="text-[9px] text-mokebo-muted font-bold uppercase tracking-wider">{info.count} Position{info.count > 1 ? 'en' : ''}</span>
                           </div>
-                          <span className="font-mono text-sm font-black text-gray-900 bg-gray-50 border border-gray-100 px-3 py-1 rounded-xl">
+                          <span className="font-mono text-sm font-black text-mokebo-fg bg-white/5 border border-mokebo-border px-3 py-1 rounded-xl">
                             {fmtEur(info.sum)} €
                           </span>
                         </div>
@@ -1495,26 +1495,26 @@ export default function App() {
 
                 {/* Monats-Stats */}
                 {sortedMonths.length > 0 && (
-                  <div className="bg-white border border-gray-200/60 rounded-3xl shadow-sm p-8">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
-                      <Calendar size={14} className="text-gray-400" /> MONATS-VERTEILUNG
+                  <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl shadow-sm p-8">
+                    <h3 className="text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-6 flex items-center gap-2">
+                      <Calendar size={14} className="text-mokebo-muted" /> MONATS-VERTEILUNG
                     </h3>
                     <div className="space-y-4">
                       {sortedMonths.map(month => (
                         <div key={month} className="group">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-xs font-black text-gray-700">{month}</span>
-                            <span className="font-mono text-xs font-black text-gray-900">{fmtEur(analysis.monthly[month].sum)} €</span>
+                            <span className="text-xs font-black text-mokebo-border">{month}</span>
+                            <span className="font-mono text-xs font-black text-mokebo-fg">{fmtEur(analysis.monthly[month].sum)} €</span>
                           </div>
-                          <div className="relative h-2 bg-gray-50 rounded-full overflow-hidden">
+                          <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
                             <motion.div 
                               initial={{ width: 0 }}
                               animate={{ width: `${(analysis.monthly[month].sum / (analysis.totalIst || 1)) * 100}%` }}
-                              className="absolute h-full bg-gray-900 rounded-full"
+                              className="absolute h-full bg-mokebo-green rounded-full"
                             />
                           </div>
                           <div className="flex justify-between mt-1.5">
-                            <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest">{analysis.monthly[month].count} POS.</span>
+                            <span className="text-[9px] font-black text-mokebo-border uppercase tracking-widest">{analysis.monthly[month].count} POS.</span>
                             {analysis.monthly[month].retouren > 0 && (
                               <span className="text-[9px] font-black text-rose-400 uppercase tracking-widest">{analysis.monthly[month].retouren} RET.</span>
                             )}
@@ -1529,7 +1529,7 @@ export default function App() {
                 <div className="grid grid-cols-2 gap-4">
                   <button 
                     onClick={() => window.print()}
-                    className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 text-gray-500 py-6 rounded-3xl text-xs font-black hover:bg-gray-50 active:scale-95 transition-all shadow-sm"
+                    className="flex flex-col items-center justify-center gap-3 bg-mokebo-surface border border-mokebo-border text-mokebo-muted py-6 rounded-3xl text-xs font-black hover:bg-white/5 active:scale-95 transition-all shadow-sm"
                   >
                     <Printer size={20} />
                     DRUCKEN
@@ -1537,7 +1537,7 @@ export default function App() {
                   <button 
                     onClick={exportToCSV}
                     disabled={visibleItems.length === 0}
-                    className="flex flex-col items-center justify-center gap-3 bg-gray-900 text-white py-6 rounded-3xl text-xs font-black hover:bg-gray-800 active:scale-95 transition-all shadow-xl shadow-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="flex flex-col items-center justify-center gap-3 bg-mokebo-green text-white py-6 rounded-3xl text-xs font-black hover:bg-mokebo-dark active:scale-95 transition-all shadow-xl shadow-black/30 disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     <Download size={20} />
                     EXPORT
@@ -1557,25 +1557,25 @@ export default function App() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setEditingMaster(null)}
-                className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm"
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
               />
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden"
+                className="relative bg-mokebo-surface w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden"
               >
-                <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+                <div className="px-8 py-6 border-b border-mokebo-border/50 flex items-center justify-between bg-white/5">
                   <div className="flex items-center gap-4">
-                    <div className="p-2 bg-indigo-600 text-white rounded-xl">
+                    <div className="p-2 bg-mokebo-green text-white rounded-xl">
                       <Database size={20} />
                     </div>
                     <div>
                       <h2 className="font-black text-lg tracking-tight">Eintrag bearbeiten</h2>
-                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Stammdaten & Aliases</p>
+                      <p className="text-[10px] text-mokebo-muted font-bold uppercase tracking-widest">Stammdaten & Aliases</p>
                     </div>
                   </div>
-                  <button onClick={() => setEditingMaster(null)} className="text-gray-300 hover:text-gray-500 transition-colors">
+                  <button onClick={() => setEditingMaster(null)} className="text-mokebo-border hover:text-mokebo-muted transition-colors">
                     <X size={24} />
                   </button>
                 </div>
@@ -1583,28 +1583,28 @@ export default function App() {
                 <div className="p-8 space-y-6">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Interne SKU</label>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Interne SKU</label>
                       <input 
                         type="text" 
                         value={editingMaster.sku}
                         onChange={e => setEditingMaster({...editingMaster, sku: e.target.value})}
-                        className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all font-mono"
+                        className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all font-mono"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">EK-Preis (€)</label>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">EK-Preis (€)</label>
                       <input 
                         type="number" 
                         step="0.01"
                         value={editingMaster.ek}
                         onChange={e => setEditingMaster({...editingMaster, ek: parseNum(e.target.value)})}
-                        className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all font-mono"
+                        className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all font-mono"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Aliases (Alternative Namen in Rechnungen)</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Aliases (Alternative Namen in Rechnungen)</label>
                     <div className="space-y-2 max-h-40 overflow-y-auto pr-2">
                       {(editingMaster.aliases || []).map((alias, idx) => (
                         <div key={idx} className="flex items-center gap-2 group">
@@ -1616,14 +1616,14 @@ export default function App() {
                               newAliases[idx] = e.target.value;
                               setEditingMaster({...editingMaster, aliases: newAliases});
                             }}
-                            className="flex-1 px-4 py-2 border border-gray-100 rounded-xl text-xs font-bold bg-gray-50/30 outline-none focus:ring-2 focus:ring-indigo-100 transition-all font-mono"
+                            className="flex-1 px-4 py-2 border border-mokebo-border rounded-xl text-xs font-bold bg-white/5 outline-none focus:ring-2 focus:ring-mokebo-mint/20 transition-all font-mono"
                           />
                           <button 
                             onClick={() => {
                               const newAliases = (editingMaster.aliases || []).filter((_, i) => i !== idx);
                               setEditingMaster({...editingMaster, aliases: newAliases});
                             }}
-                            className="p-2 text-gray-300 hover:text-rose-500 transition-colors"
+                            className="p-2 text-mokebo-border hover:text-rose-500 transition-colors"
                           >
                             <Trash2 size={14} />
                           </button>
@@ -1632,23 +1632,23 @@ export default function App() {
                     </div>
                     <button 
                       onClick={() => setEditingMaster({...editingMaster, aliases: [...(editingMaster.aliases || []), '']})}
-                      className="w-full py-3 border border-dashed border-gray-200 rounded-2xl text-[10px] font-black text-gray-400 hover:text-indigo-600 hover:border-indigo-200 transition-all uppercase tracking-widest"
+                      className="w-full py-3 border border-dashed border-mokebo-border rounded-2xl text-[10px] font-black text-mokebo-muted hover:text-mokebo-mint hover:border-mokebo-mint/40 transition-all uppercase tracking-widest"
                     >
                       + Alias hinzufügen
                     </button>
                   </div>
                 </div>
 
-                <div className="px-8 py-6 bg-gray-50/50 border-t border-gray-50 flex justify-end gap-3">
+                <div className="px-8 py-6 bg-white/5 border-t border-mokebo-border/50 flex justify-end gap-3">
                   <button 
                     onClick={() => setEditingMaster(null)}
-                    className="px-6 py-3 text-xs font-bold text-gray-400 hover:text-gray-600 transition-colors"
+                    className="px-6 py-3 text-xs font-bold text-mokebo-muted hover:text-mokebo-border transition-colors"
                   >
                     Abbrechen
                   </button>
                   <button 
                     onClick={() => saveMasterEntry(editingMaster)}
-                    className="px-8 py-3 bg-gray-900 text-white text-xs font-bold rounded-2xl hover:bg-gray-800 transition-all shadow-xl shadow-gray-200"
+                    className="px-8 py-3 bg-mokebo-green text-white text-xs font-bold rounded-2xl hover:bg-mokebo-dark transition-all shadow-xl shadow-black/30"
                   >
                     Änderungen speichern
                   </button>
@@ -1667,33 +1667,33 @@ export default function App() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsMappingOpen(false)}
-                className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm"
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
               />
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+                className="relative bg-mokebo-surface w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
               >
-                <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/30 flex-shrink-0">
+                <div className="px-8 py-6 border-b border-mokebo-border/50 flex items-center justify-between bg-white/5 flex-shrink-0">
                   <div className="flex items-center gap-4">
-                    <div className="p-2 bg-gray-900 text-white rounded-xl">
+                    <div className="p-2 bg-mokebo-green text-white rounded-xl">
                       <FileText size={20} />
                     </div>
                     <div>
                       <h2 className="font-black text-lg tracking-tight">Spalten-Mapping</h2>
-                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Mapping für {mappingType === 'master' ? 'Stammdaten' : 'Rechnung'}</p>
+                      <p className="text-[10px] text-mokebo-muted font-bold uppercase tracking-widest">Mapping für {mappingType === 'master' ? 'Stammdaten' : 'Rechnung'}</p>
                     </div>
                   </div>
-                  <button onClick={() => setIsMappingOpen(false)} className="text-gray-300 hover:text-gray-500 transition-colors">
+                  <button onClick={() => setIsMappingOpen(false)} className="text-mokebo-border hover:text-mokebo-muted transition-colors">
                     <X size={24} />
                   </button>
                 </div>
 
                 <div className="p-8 space-y-8 overflow-y-auto flex-1">
                   {/* Select Row containing titles */}
-                  <div className="p-5 border border-indigo-100 rounded-2xl bg-indigo-50/30 space-y-2">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-indigo-600 flex items-center gap-1.5">
+                  <div className="p-5 border border-mokebo-mint/30 rounded-2xl bg-mokebo-mint/15 space-y-2">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-mint flex items-center gap-1.5">
                       <Info size={12} /> Zeile mit Spaltenbezeichnungen wählen
                     </label>
                     <select
@@ -1708,7 +1708,7 @@ export default function App() {
                           setInvoiceMapping(guessInvoiceMapping(row));
                         }
                       }}
-                      className="w-full px-4 py-3 border border-indigo-100 rounded-xl text-sm font-bold bg-white outline-none focus:ring-4 focus:ring-indigo-100 transition-all text-gray-700"
+                      className="w-full px-4 py-3 border border-mokebo-mint/30 rounded-xl text-sm font-bold bg-mokebo-surface outline-none focus:ring-4 focus:ring-mokebo-mint/20 transition-all text-mokebo-border"
                     >
                       {rawRows.slice(0, 10).map((row, idx) => (
                         <option key={idx} value={idx}>
@@ -1716,17 +1716,17 @@ export default function App() {
                         </option>
                       ))}
                     </select>
-                    <p className="text-[10px] text-gray-400 font-medium">Zeilen vor dieser Zeile werden beim Daten-Import ignoriert. Zeilen danach enthalten die eigentlichen Produkte.</p>
+                    <p className="text-[10px] text-mokebo-muted font-medium">Zeilen vor dieser Zeile werden beim Daten-Import ignoriert. Zeilen danach enthalten die eigentlichen Produkte.</p>
                   </div>
 
                   {/* Preview */}
                   <div className="space-y-3">
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Daten-Vorschau (Spaltenbezeichnungen)</label>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Daten-Vorschau (Spaltenbezeichnungen)</label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       {rawRows[headerRowIdx]?.map((header, idx) => (
-                        <div key={idx} className="p-3 border border-gray-100 rounded-xl bg-gray-50/50">
-                          <div className="text-[9px] font-black text-indigo-400 uppercase mb-1">Spalte {String.fromCharCode(65 + idx)}</div>
-                          <div className="text-[11px] font-bold text-gray-700 truncate">{header || `(Leer)`}</div>
+                        <div key={idx} className="p-3 border border-mokebo-border rounded-xl bg-white/5">
+                          <div className="text-[9px] font-black text-mokebo-mint uppercase mb-1">Spalte {String.fromCharCode(65 + idx)}</div>
+                          <div className="text-[11px] font-bold text-mokebo-border truncate">{header || `(Leer)`}</div>
                         </div>
                       ))}
                     </div>
@@ -1737,32 +1737,32 @@ export default function App() {
                     {mappingType === 'master' ? (
                       <>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: SKU / Artikelnummer</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: SKU / Artikelnummer</label>
                           <select 
                             value={masterMapping.skuIdx}
                             onChange={e => setMasterMapping(m => ({...m, skuIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: Rabatt (%)</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: Rabatt (%)</label>
                           <select 
                             value={masterMapping.discountIdx}
                             onChange={e => setMasterMapping(m => ({...m, discountIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             <option value={-1}>Nicht vorhanden</option>
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: Preis (Netto)</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: Preis (Netto)</label>
                           <select 
                             value={masterMapping.priceIdx}
                             onChange={e => setMasterMapping(m => ({...m, priceIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
@@ -1771,71 +1771,71 @@ export default function App() {
                     ) : (
                       <>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: Rechnungs-Nr.</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: Rechnungs-Nr.</label>
                           <select 
                             value={invoiceMapping.bagRgIdx}
                             onChange={e => setInvoiceMapping(m => ({...m, bagRgIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: Auftrag-ID</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: Auftrag-ID</label>
                           <select 
                             value={invoiceMapping.auftragIdIdx}
                             onChange={e => setInvoiceMapping(m => ({...m, auftragIdIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: Datum</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: Datum</label>
                           <select 
                             value={invoiceMapping.dateIdx}
                             onChange={e => setInvoiceMapping(m => ({...m, dateIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: SKU</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: SKU</label>
                           <select 
                             value={invoiceMapping.skuIdx}
                             onChange={e => setInvoiceMapping(m => ({...m, skuIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: Menge</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: Menge</label>
                           <select 
                             value={invoiceMapping.mengeIdx}
                             onChange={e => setInvoiceMapping(m => ({...m, mengeIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: EK/Stk (Netto)</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: EK/Stk (Netto)</label>
                           <select 
                             value={invoiceMapping.priceIdx}
                             onChange={e => setInvoiceMapping(m => ({...m, priceIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
                         </div>
                         <div className="space-y-2">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400">Spalte: Gesamt (Ist)</label>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted">Spalte: Gesamt (Ist)</label>
                           <select 
                             value={invoiceMapping.istWertIdx}
                             onChange={e => setInvoiceMapping(m => ({...m, istWertIdx: Number(e.target.value)}))}
-                            className="w-full px-4 py-3 border border-gray-100 rounded-2xl text-sm font-bold bg-gray-50/50 outline-none focus:ring-4 focus:ring-indigo-50 transition-all"
+                            className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all"
                           >
                             {rawRows[headerRowIdx]?.map((h, i) => <option key={i} value={i}>Spalte {String.fromCharCode(65 + i)}: {h || `(Leer)`}</option>)}
                           </select>
@@ -1845,16 +1845,16 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="px-8 py-6 border-t border-gray-50 bg-gray-50/30 flex justify-end gap-3 flex-shrink-0">
+                <div className="px-8 py-6 border-t border-mokebo-border/50 bg-white/5 flex justify-end gap-3 flex-shrink-0">
                   <button 
                     onClick={() => setIsMappingOpen(false)}
-                    className="px-6 py-3 text-xs font-bold text-gray-500 hover:text-gray-700 transition-colors"
+                    className="px-6 py-3 text-xs font-bold text-mokebo-muted hover:text-mokebo-border transition-colors"
                   >
                     Abbrechen
                   </button>
                   <button 
                     onClick={confirmMapping}
-                    className="flex items-center gap-2 bg-gray-900 text-white text-xs font-bold px-8 py-3 rounded-2xl hover:bg-gray-800 transition-all shadow-xl shadow-gray-200"
+                    className="flex items-center gap-2 bg-mokebo-green text-white text-xs font-bold px-8 py-3 rounded-2xl hover:bg-mokebo-dark transition-all shadow-xl shadow-black/30"
                   >
                     Import bestätigen
                     <ChevronRight size={16} />
@@ -1866,14 +1866,14 @@ export default function App() {
         </AnimatePresence>
 
         {/* ── EXPORT FOOTER FOR LLMs / CLAUDE ── */}
-        <footer className="no-print mt-12 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-gray-200/60 pt-6 text-xs text-gray-400">
+        <footer className="no-print mt-12 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-mokebo-border pt-6 text-xs text-mokebo-muted">
           <p>© {new Date().getFullYear()} Magma Auditor. Alle Rechte vorbehalten.</p>
           <div className="flex flex-wrap items-center gap-4">
-            <span className="font-semibold text-gray-500">Codebase exportieren:</span>
+            <span className="font-semibold text-mokebo-muted">Codebase exportieren:</span>
             <a 
               href="/magma_auditor_all_code.md" 
               download="magma_auditor_all_code.md"
-              className="flex items-center gap-1.5 bg-indigo-50 border border-indigo-100 hover:bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-xl font-bold transition-all shadow-sm"
+              className="flex items-center gap-1.5 bg-mokebo-mint/15 border border-mokebo-mint/30 hover:bg-mokebo-mint/25 text-mokebo-mint px-3 py-1.5 rounded-xl font-bold transition-all shadow-sm"
             >
               <FileText size={14} />
               Als .md (Für Claude / LLMs)
@@ -1881,7 +1881,7 @@ export default function App() {
             <a 
               href="/magma_auditor_project.tar.gz" 
               download="magma_auditor_project.tar.gz"
-              className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 hover:bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-xl font-bold transition-all shadow-sm"
+              className="flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-100 hover:bg-emerald-500/20 text-emerald-700 px-3 py-1.5 rounded-xl font-bold transition-all shadow-sm"
             >
               <Download size={14} />
               Als .tar.gz (Komplettes Projekt)

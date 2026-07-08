@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FileText, ArrowUpRight } from "lucide-react";
+import { MokeboMark, MokeboWordmark } from "@/components/MokeboLogo";
 
 type AppTile = {
   href: string;
@@ -25,18 +26,26 @@ export default function DashboardPage() {
   const manufacturers = Array.from(new Set(apps.map((a) => a.manufacturer)));
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-mokebo-dark">
       <div className="max-w-screen-xl mx-auto px-4 py-10 md:px-8">
-        <header className="mb-10">
-          <h1 className="font-black text-3xl tracking-tight">mokebo Invoice-Tools</h1>
-          <p className="text-gray-400 font-medium mt-1">
-            Rechnungsprüfung, gruppiert nach Hersteller
-          </p>
+        <header className="mb-12 flex items-center gap-4">
+          <MokeboMark size={48} />
+          <div>
+            <h1 className="flex items-baseline gap-2 text-3xl">
+              <MokeboWordmark className="text-mokebo-fg" />
+              <span className="font-sans font-semibold text-mokebo-muted text-xl">
+                Invoice-Tools
+              </span>
+            </h1>
+            <p className="text-mokebo-muted font-medium mt-1">
+              Rechnungsprüfung, gruppiert nach Hersteller
+            </p>
+          </div>
         </header>
 
         {manufacturers.map((mfr) => (
           <section key={mfr} className="mb-10">
-            <h2 className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-4">
+            <h2 className="text-[11px] font-black uppercase tracking-widest text-mokebo-muted mb-4">
               {mfr}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -47,25 +56,25 @@ export default function DashboardPage() {
                     key={i}
                     href={app.href}
                     aria-disabled={!app.available}
-                    className={`group relative bg-white border border-gray-200/60 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all ${
+                    className={`group relative bg-mokebo-surface border border-mokebo-border rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.25)] transition-all ${
                       app.available
-                        ? "hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+                        ? "hover:shadow-lg hover:-translate-y-0.5 hover:border-mokebo-mint/50 cursor-pointer"
                         : "opacity-50 cursor-not-allowed pointer-events-none"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 rounded-2xl bg-gray-900 text-white flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-2xl bg-mokebo-mint text-mokebo-dark flex items-center justify-center">
                         {app.icon}
                       </div>
                       {app.available && (
                         <ArrowUpRight
                           size={18}
-                          className="text-gray-300 group-hover:text-gray-900 transition-colors"
+                          className="text-mokebo-muted group-hover:text-mokebo-mint transition-colors"
                         />
                       )}
                     </div>
-                    <h3 className="font-black text-lg tracking-tight">{app.title}</h3>
-                    <p className="text-sm text-gray-400 font-medium mt-1">
+                    <h3 className="font-black text-lg tracking-tight text-mokebo-fg">{app.title}</h3>
+                    <p className="text-sm text-mokebo-muted font-medium mt-1">
                       {app.description}
                     </p>
                   </Link>
