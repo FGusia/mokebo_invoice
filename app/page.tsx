@@ -4,6 +4,7 @@ import { MokeboMark, MokeboWordmark } from "@/components/MokeboLogo";
 import { MagmaMark } from "@/components/magma/MagmaLogo";
 import { ProcontourMark } from "@/components/procontour/ProcontourLogo";
 import { BrilliantMark } from "@/components/brilliant/BrilliantLogo";
+import { GlsMark } from "@/components/gls/GlsLogo";
 
 type AppTile = {
   href: string;
@@ -47,7 +48,7 @@ const logistikApps: AppTile[] = [
     title: "Sperrgut-Check",
     description: "Prüfung von Sperrgut-Zuschlägen auf GLS-Rechnungen gegen Artikel-Stammdaten.",
     group: "GLS",
-    icon: <Truck size={22} strokeWidth={2.5} />,
+    icon: <GlsMark height={28} />,
     available: true,
   },
   {

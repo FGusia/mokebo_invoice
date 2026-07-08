@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import Link from 'next/link';
+import { GlsMark } from './GlsLogo';
 import {
   ArrowLeft,
   Upload,
@@ -352,12 +353,8 @@ export default function GlsAuditor() {
           >
             <ArrowLeft size={18} strokeWidth={2.5} />
           </Link>
-          <div className="w-9 h-9 rounded-xl bg-mokebo-green flex items-center justify-center text-white font-black text-sm shrink-0">
-            GLS
-          </div>
+          <GlsMark height={32} className="shadow-lg shadow-black/30" />
           <h1 className="text-sm font-black tracking-tight leading-tight">
-            GLS
-            <br />
             Sperrgut-Check
           </h1>
         </div>
