@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText, Boxes, ArrowUpRight } from "lucide-react";
+import { FileText, ArrowUpRight } from "lucide-react";
 
 type AppTile = {
   href: string;
@@ -19,22 +19,6 @@ const apps: AppTile[] = [
     icon: <FileText size={22} strokeWidth={2.5} />,
     available: true,
   },
-  {
-    href: "#",
-    title: "Lagerbestand-Check",
-    description: "Bestandsabgleich – folgt in Kürze.",
-    manufacturer: "Magma",
-    icon: <Boxes size={22} strokeWidth={2.5} />,
-    available: false,
-  },
-  {
-    href: "#",
-    title: "Lagerbestand-Check",
-    description: "Bestandsabgleich – folgt in Kürze.",
-    manufacturer: "PC",
-    icon: <Boxes size={22} strokeWidth={2.5} />,
-    available: false,
-  },
 ];
 
 export default function DashboardPage() {
@@ -44,9 +28,9 @@ export default function DashboardPage() {
     <div className="min-h-screen">
       <div className="max-w-screen-xl mx-auto px-4 py-10 md:px-8">
         <header className="mb-10">
-          <h1 className="font-black text-3xl tracking-tight">mokebo Apps</h1>
+          <h1 className="font-black text-3xl tracking-tight">mokebo Invoice-Tools</h1>
           <p className="text-gray-400 font-medium mt-1">
-            Interne Tools, gruppiert nach Hersteller
+            Rechnungsprüfung, gruppiert nach Hersteller
           </p>
         </header>
 

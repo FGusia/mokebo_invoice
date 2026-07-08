@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "mokebo Apps",
-  description: "Interne Tools für alle Hersteller",
+  title: "mokebo Invoice-Tools",
+  description: "Rechnungsprüfung für alle Hersteller",
 };
 
 export default function RootLayout({
