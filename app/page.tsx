@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { MokeboMark, MokeboWordmark } from "@/components/MokeboLogo";
 import { MagmaMark } from "@/components/magma/MagmaLogo";
+import { ProcontourMark } from "@/components/procontour/ProcontourLogo";
 
 type AppTile = {
   href: string;
@@ -19,6 +20,14 @@ const apps: AppTile[] = [
     description: "Automatisierte Audit von Herstellerrechnungen inkl. Aktionsrabatten & Stammdaten.",
     manufacturer: "Magma",
     icon: <MagmaMark size={48} />,
+    available: true,
+  },
+  {
+    href: "/procontour/invoice-audit",
+    title: "Rechnungsprüfung",
+    description: "Rechnungsprüfung & Preisabgleich mit Stammdaten.",
+    manufacturer: "Procontour",
+    icon: <ProcontourMark height={40} />,
     available: true,
   },
 ];
