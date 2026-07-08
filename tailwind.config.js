@@ -23,6 +23,7 @@ module.exports = {
           olive: "#766325",
           cream: "#E8E0C1",
           rust: "#6F331D",
+          rustlight: "#D99C82",
         },
       },
       fontFamily: {

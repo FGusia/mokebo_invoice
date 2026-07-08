@@ -876,7 +876,7 @@ export default function App() {
                             </button>
                             <button 
                               onClick={() => setNewRule(r => ({...r, skuFilter: ''}))}
-                              className="text-[9px] font-black text-mokebo-muted hover:text-rose-500 uppercase tracking-widest"
+                              className="text-[9px] font-black text-mokebo-muted hover:text-mokebo-rustlight uppercase tracking-widest"
                             >
                               Leeren
                             </button>
@@ -958,7 +958,7 @@ export default function App() {
                           setDiscountRules([]);
                           syncToLocal(null, []);
                         }}
-                        className="flex items-center gap-2 text-[10px] font-black text-mokebo-muted hover:text-rose-500 transition-all px-3 py-1.5 rounded-lg hover:bg-rose-500/15"
+                        className="flex items-center gap-2 text-[10px] font-black text-mokebo-muted hover:text-mokebo-rustlight transition-all px-3 py-1.5 rounded-lg hover:bg-mokebo-rust/15"
                       >
                         <Trash2 size={12} />
                         ALLE LÖSCHEN
@@ -1018,7 +1018,7 @@ export default function App() {
                           </button>
                           <button 
                             onClick={() => removeRule(rule.id)}
-                            className="w-10 h-10 rounded-xl flex items-center justify-center text-rose-400 hover:text-rose-600 bg-rose-500/15 hover:bg-rose-500/15 border border-rose-500/30 transition-all"
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-mokebo-rustlight hover:text-mokebo-rustlight bg-mokebo-rust/15 hover:bg-mokebo-rust/15 border border-mokebo-rust/30 transition-all"
                             title="Löschen"
                           >
                             <Trash2 size={18} />
@@ -1112,7 +1112,7 @@ export default function App() {
                     </div>
                     {masterPrices.length > 0 && (
                       showClearMasterConfirm ? (
-                        <div className="flex items-center gap-2 bg-rose-500/15 border border-rose-500/30 px-3 py-1.5 rounded-xl text-[10px] font-black text-rose-600">
+                        <div className="flex items-center gap-2 bg-mokebo-rust/15 border border-mokebo-rust/30 px-3 py-1.5 rounded-xl text-[10px] font-black text-mokebo-rustlight">
                           <span>Wirklich alle löschen?</span>
                           <button 
                             onClick={() => {
@@ -1120,7 +1120,7 @@ export default function App() {
                               syncToLocal([], null);
                               setShowClearMasterConfirm(false);
                             }}
-                            className="bg-rose-600 text-white px-2.5 py-1 rounded-lg hover:bg-rose-700 transition-all font-black"
+                            className="bg-mokebo-rust text-white px-2.5 py-1 rounded-lg hover:bg-mokebo-dark transition-all font-black"
                           >
                             JA
                           </button>
@@ -1134,7 +1134,7 @@ export default function App() {
                       ) : (
                         <button 
                           onClick={() => setShowClearMasterConfirm(true)}
-                          className="flex items-center gap-2 text-[10px] font-black text-mokebo-muted hover:text-rose-500 transition-all px-3 py-2 rounded-xl hover:bg-rose-500/15 border border-transparent hover:border-rose-500/30"
+                          className="flex items-center gap-2 text-[10px] font-black text-mokebo-muted hover:text-mokebo-rustlight transition-all px-3 py-2 rounded-xl hover:bg-mokebo-rust/15 border border-transparent hover:border-mokebo-rust/30"
                         >
                           <Trash2 size={14} />
                           ALLE LÖSCHEN
@@ -1219,7 +1219,7 @@ export default function App() {
                                   </button>
                                   <button 
                                     onClick={() => deleteMasterEntry(p.id)}
-                                    className="p-2 text-mokebo-muted hover:text-rose-600 hover:bg-rose-500/15 rounded-lg transition-all"
+                                    className="p-2 text-mokebo-muted hover:text-mokebo-rustlight hover:bg-mokebo-rust/15 rounded-lg transition-all"
                                     title="Löschen"
                                   >
                                     <Trash2 size={14} />
@@ -1286,7 +1286,7 @@ export default function App() {
                         {(startDate || endDate) && (
                           <button 
                             onClick={() => { setStartDate(''); setEndDate(''); }}
-                            className="px-2 py-1 text-[10px] font-black text-rose-500 hover:bg-rose-500/15 rounded-lg transition-colors mr-1"
+                            className="px-2 py-1 text-[10px] font-black text-mokebo-rustlight hover:bg-mokebo-rust/15 rounded-lg transition-colors mr-1"
                           >
                             RESET
                           </button>
@@ -1296,12 +1296,12 @@ export default function App() {
                       <div className="flex items-center gap-2">
                         <button 
                           onClick={() => setFilterErrors(!filterErrors)}
-                          className={`flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border transition-all ${filterErrors ? 'bg-rose-500/150 text-white border-rose-500 shadow-lg shadow-rose-100' : 'bg-mokebo-surface text-mokebo-muted border-mokebo-border hover:border-mokebo-border'}`}
+                          className={`flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border transition-all ${filterErrors ? 'bg-mokebo-rust text-white border-mokebo-rust shadow-lg shadow-mokebo-rust/20' : 'bg-mokebo-surface text-mokebo-muted border-mokebo-border hover:border-mokebo-border'}`}
                         >
                           <Filter size={12} strokeWidth={3} />
                           NUR FEHLER
                           {analysis.errors > 0 && (
-                            <span className={`ml-1 px-1.5 py-0.5 rounded-md ${filterErrors ? 'bg-rose-400' : 'bg-rose-500/20 text-rose-600'}`}>
+                            <span className={`ml-1 px-1.5 py-0.5 rounded-md ${filterErrors ? 'bg-mokebo-rust' : 'bg-mokebo-rust/20 text-mokebo-rustlight'}`}>
                               {analysis.errors}
                             </span>
                           )}
@@ -1309,7 +1309,7 @@ export default function App() {
                         {items.length > 0 && (
                           <button 
                             onClick={() => setItems([])}
-                            className="flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border border-mokebo-border text-mokebo-muted hover:text-rose-500 hover:border-rose-500/30 transition-all"
+                            className="flex items-center gap-2 text-[10px] font-black px-4 py-2 rounded-xl border border-mokebo-border text-mokebo-muted hover:text-mokebo-rustlight hover:border-mokebo-rust/30 transition-all"
                             title="Liste leeren"
                           >
                             <Trash2 size={12} />
@@ -1353,7 +1353,7 @@ export default function App() {
                         </thead>
                         <tbody className="divide-y divide-white/5">
                           {visibleItems.map(item => (
-                            <tr key={item.id} className={`group transition-colors ${item.hasError ? 'bg-rose-500/15' : 'hover:bg-white/5'} ${item.isSpecialItem ? 'opacity-40 grayscale-[0.5]' : ''} ${(item as any).notAuditable ? 'bg-white/5' : ''}`}>
+                            <tr key={item.id} className={`group transition-colors ${item.hasError ? 'bg-mokebo-rust/15' : 'hover:bg-white/5'} ${item.isSpecialItem ? 'opacity-40 grayscale-[0.5]' : ''} ${(item as any).notAuditable ? 'bg-white/5' : ''}`}>
                               <td className="py-5 px-8">
                                 <div className="font-mono text-xs font-bold text-mokebo-fg">
                                   {item.auftragId || '–'}
@@ -1378,7 +1378,7 @@ export default function App() {
                                 )}
                               </td>
                               <td className="py-5 px-4 text-center">
-                                <span className={`font-mono font-black text-sm ${item.menge < 0 ? 'text-rose-500' : 'text-mokebo-fg'}`}>
+                                <span className={`font-mono font-black text-sm ${item.menge < 0 ? 'text-mokebo-rustlight' : 'text-mokebo-fg'}`}>
                                   {item.menge}
                                 </span>
                               </td>
@@ -1396,12 +1396,12 @@ export default function App() {
                                 <span className="font-mono font-black text-mokebo-mint text-sm">{fmtEur(item.sollWert || 0)}</span>
                               </td>
                               <td className="py-5 px-4 text-right bg-white/5">
-                                <span className={`font-mono font-black text-sm ${item.hasError ? 'text-rose-400' : 'text-mokebo-fg'}`}>
+                                <span className={`font-mono font-black text-sm ${item.hasError ? 'text-mokebo-rustlight' : 'text-mokebo-fg'}`}>
                                   {fmtEur(item.istWert)}
                                 </span>
                               </td>
                               <td className="py-5 px-8 text-right">
-                                <span className={`font-mono text-[11px] font-black px-3 py-1.5 rounded-xl ${Math.abs(item.diff || 0) <= 0.01 ? 'bg-mokebo-surface2 text-mokebo-fg' : (item.diff || 0) > 0 ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                                <span className={`font-mono text-[11px] font-black px-3 py-1.5 rounded-xl ${Math.abs(item.diff || 0) <= 0.01 ? 'bg-mokebo-surface2 text-mokebo-fg' : (item.diff || 0) > 0 ? 'bg-mokebo-rust/20 text-mokebo-rustlight' : 'bg-emerald-500/20 text-emerald-400'}`}>
                                   {(item.diff || 0) > 0 ? '+' : ''}{fmtEur(item.diff || 0)}
                                 </span>
                               </td>
@@ -1434,7 +1434,7 @@ export default function App() {
                     
                     <div className="pt-6 mt-2 border-t border-mokebo-border/50">
                       <div className="text-[10px] font-black uppercase text-mokebo-muted tracking-widest mb-2">Differenz</div>
-                      <div className={`font-mono text-4xl font-black tracking-tighter ${Math.abs(analysis.diff) <= 0.01 ? 'text-emerald-600' : analysis.diff > 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
+                      <div className={`font-mono text-4xl font-black tracking-tighter ${Math.abs(analysis.diff) <= 0.01 ? 'text-emerald-600' : analysis.diff > 0 ? 'text-mokebo-rustlight' : 'text-emerald-600'}`}>
                         {analysis.diff > 0 ? '+' : ''}{fmtEur(analysis.diff)} €
                       </div>
                     </div>
@@ -1448,7 +1448,7 @@ export default function App() {
                         </div>
                       )}
                       {analysis.errors > 0 && (
-                        <div className="flex items-center gap-3 text-xs font-black text-rose-600 bg-rose-500/15 rounded-2xl px-4 py-3 border border-rose-500/30">
+                        <div className="flex items-center gap-3 text-xs font-black text-mokebo-rustlight bg-mokebo-rust/15 rounded-2xl px-4 py-3 border border-mokebo-rust/30">
                           <AlertTriangle size={16} /> {analysis.errors} Preisabweichung{analysis.errors > 1 ? 'en' : ''}
                         </div>
                       )}
@@ -1515,7 +1515,7 @@ export default function App() {
                           <div className="flex justify-between mt-1.5">
                             <span className="text-[9px] font-black text-mokebo-muted uppercase tracking-widest">{analysis.monthly[month].count} POS.</span>
                             {analysis.monthly[month].retouren > 0 && (
-                              <span className="text-[9px] font-black text-rose-400 uppercase tracking-widest">{analysis.monthly[month].retouren} RET.</span>
+                              <span className="text-[9px] font-black text-mokebo-rustlight uppercase tracking-widest">{analysis.monthly[month].retouren} RET.</span>
                             )}
                           </div>
                         </div>
@@ -1622,7 +1622,7 @@ export default function App() {
                               const newAliases = (editingMaster.aliases || []).filter((_, i) => i !== idx);
                               setEditingMaster({...editingMaster, aliases: newAliases});
                             }}
-                            className="p-2 text-mokebo-muted hover:text-rose-500 transition-colors"
+                            className="p-2 text-mokebo-muted hover:text-mokebo-rustlight transition-colors"
                           >
                             <Trash2 size={14} />
                           </button>
