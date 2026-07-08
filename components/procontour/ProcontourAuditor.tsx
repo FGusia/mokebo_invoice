@@ -161,6 +161,14 @@ const calcBrutto = (netto: number, rabatt: number) => {
   return netto * (1 - (rabatt / 100));
 };
 
+const extractInvoiceNumberFromFilename = (filename: string) => {
+  if (!filename) return '';
+  const base = filename.replace(/\.[^/.]+$/, ''); // strip extension
+  const digitMatch = base.match(/\d{4,}/); // prefer a long digit run, e.g. 1604869
+  if (digitMatch) return digitMatch[0];
+  return base.trim();
+};
+
 const newItem = (overrides = {}) => ({
   id: Date.now() + Math.random(),
   orderId: '',
@@ -245,6 +253,7 @@ export default function App() {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const uploadedFileName = file.name;
     const reader = new FileReader();
     reader.onload = ev => {
       const text = ev.target?.result as string;
@@ -327,14 +336,14 @@ export default function App() {
         if (mapping.date === -1) mapping.date = 3;
       }
 
-      setImportState({ open: true, type, rows, mapping, discountType: 'standard', headerRowIndex });
+      setImportState({ open: true, type, rows, mapping, discountType: 'standard', headerRowIndex, fileName: uploadedFileName });
     };
     reader.readAsText(file, 'UTF-8');
     e.target.value = '';
   };
 
   const confirmImport = () => {
-    const { type, rows, mapping, headerRowIndex } = importState;
+    const { type, rows, mapping, headerRowIndex, fileName } = importState;
     const dataRows = rows.slice((headerRowIndex || 0) + 1).filter((r: string[]) => r.some(c => c.trim()));
 
     if (type === 'master') {
@@ -366,6 +375,10 @@ export default function App() {
     } else {
       // Extract metadata from all rows (e.g. invoice number at the bottom)
       const newMetadata = { ...metadata };
+      // The invoice number is unreliable inside the CSV content but always
+      // present in the uploaded file's name, so that wins.
+      const fileInvoiceNumber = extractInvoiceNumberFromFilename(fileName || '');
+      if (fileInvoiceNumber) newMetadata.invoiceNumber = fileInvoiceNumber;
       rows.forEach((row: string[]) => {
         row.forEach((cell: string, i: number) => {
           const lower = cell.toLowerCase().trim();
@@ -1087,7 +1100,10 @@ export default function App() {
                           <div className="flex justify-between items-end mb-1.5">
                             <div>
                               <div className="text-xs font-black text-gray-200">{m}</div>
-                              <div className="text-[9px] text-mokebo-muted font-bold uppercase tracking-tighter">{data.count} Pos.</div>
+                              <div className="text-[9px] text-mokebo-muted font-bold uppercase tracking-tighter">
+                                {data.count} Pos.
+                                {metadata.invoiceNumber && <> &middot; RE {metadata.invoiceNumber}</>}
+                              </div>
                             </div>
                             <div className="text-sm font-black text-mokebo-fg mono">{fmtEur(data.sum)} €</div>
                           </div>
