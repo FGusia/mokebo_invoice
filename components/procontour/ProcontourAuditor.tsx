@@ -659,7 +659,7 @@ export default function App() {
                   <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1.5">{label}</label>
                   <input type={type} value={metadata[key] || ''} placeholder={placeholder}
                     onChange={e => setMetadata((m: any) => ({ ...m, [key]: e.target.value }))}
-                    className="w-full px-4 py-2.5 border border-mokebo-border rounded-xl text-sm font-medium bg-white/5 outline-none focus:ring-2 focus:ring-mokebo-mint/20" />
+                    className="w-full px-4 py-2.5 border border-mokebo-border rounded-xl text-sm font-medium bg-white/5 outline-none focus:ring-2 focus:ring-mokebo-mint/20 text-mokebo-fg placeholder:text-mokebo-muted" />
                 </div>
               ))}
             </div>
@@ -695,7 +695,7 @@ export default function App() {
                 <div className="relative">
                   <LI name="Search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-mokebo-muted" />
                   <input placeholder="SKU suchen..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-                    className="pl-8 pr-4 py-2 bg-mokebo-surface border border-mokebo-border rounded-xl text-xs font-medium outline-none focus:ring-2 focus:ring-mokebo-mint/20 w-48" />
+                    className="pl-8 pr-4 py-2 bg-mokebo-surface border border-mokebo-border rounded-xl text-xs font-medium outline-none focus:ring-2 focus:ring-mokebo-mint/20 w-48 text-mokebo-fg placeholder:text-mokebo-muted" />
                 </div>
                 <button onClick={() => setShowAddSku(true)}
                   className="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl bg-emerald-500/15 text-emerald-600 border border-emerald-100 hover:bg-emerald-500/20 transition-all">
@@ -747,24 +747,24 @@ export default function App() {
                       <div>
                         <label className="block text-[9px] font-bold text-mokebo-muted uppercase mb-1">SKU / Artikelnummer</label>
                         <input value={newSkuData.sku} onChange={e => setNewSkuData(s => ({ ...s, sku: e.target.value }))}
-                          className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300" placeholder="z.B. BS6.4-ant" />
+                          className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300 text-mokebo-fg placeholder:text-mokebo-muted" placeholder="z.B. BS6.4-ant" />
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
                           <label className="block text-[9px] font-bold text-mokebo-muted uppercase mb-1">Netto-Preis (€)</label>
                           <input type="number" step="0.01" value={newSkuData.price} onChange={e => setNewSkuData(s => ({ ...s, price: e.target.value }))}
-                            className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300" placeholder="0.00" />
+                            className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300 text-mokebo-fg placeholder:text-mokebo-muted" placeholder="0.00" />
                         </div>
                         <div>
                           <label className="block text-[9px] font-bold text-mokebo-muted uppercase mb-1">Std. Rabatt (%)</label>
                           <input type="number" value={newSkuData.discount} onChange={e => setNewSkuData(s => ({ ...s, discount: e.target.value }))}
-                            className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300" placeholder="0" />
+                            className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300 text-mokebo-fg placeholder:text-mokebo-muted" placeholder="0" />
                         </div>
                       </div>
                       <div>
                         <label className="block text-[9px] font-bold text-mokebo-muted uppercase mb-1">Abverkaufsrabatt (%)</label>
                         <input type="number" value={newSkuData.clearance} onChange={e => setNewSkuData(s => ({ ...s, clearance: e.target.value }))}
-                          className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300" placeholder="0" />
+                          className="w-full px-3 py-2 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-300 text-mokebo-fg placeholder:text-mokebo-muted" placeholder="0" />
                       </div>
                       <button onClick={() => {
                         if (!newSkuData.sku || !newSkuData.price) {
@@ -857,7 +857,7 @@ export default function App() {
                         placeholder="SKU / Auftrag..." 
                         value={searchTerm} 
                         onChange={e => setSearchTerm(e.target.value)}
-                        className="pl-8 pr-4 py-1.5 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-medium outline-none focus:ring-2 focus:ring-mokebo-mint/30/20 w-40 transition-all focus:w-56" 
+                        className="pl-8 pr-4 py-1.5 bg-mokebo-surface border border-mokebo-border rounded-lg text-xs font-medium outline-none focus:ring-2 focus:ring-mokebo-mint/30/20 w-40 transition-all focus:w-56 text-mokebo-fg placeholder:text-mokebo-muted" 
                       />
                     </div>
                     <button onClick={() => setFilterErrors(f => !f)}
@@ -964,11 +964,11 @@ export default function App() {
                           return (
                             <tr key={item.id} className={`group transition-all ${rowClass}`}>
                               <td className="py-4 px-5">
-                                <input className="block bg-transparent outline-none mono text-xs text-gray-200 font-medium w-32"
+                                <input className="block bg-transparent outline-none mono text-xs text-gray-200 font-medium w-32 text-mokebo-fg placeholder:text-mokebo-muted"
                                   value={item.orderId || ''} placeholder="Auftrag-Nr."
                                   onChange={e => updateItem(item.id, 'orderId', e.target.value)} />
                                 <input type="date"
-                                  className="block bg-transparent outline-none text-[10px] text-mokebo-muted mt-0.5"
+                                  className="block bg-transparent outline-none text-[10px] text-mokebo-muted mt-0.5 text-mokebo-fg placeholder:text-mokebo-muted"
                                   value={item.date || ''}
                                   onChange={e => updateItem(item.id, 'date', e.target.value)} />
                               </td>
@@ -1009,13 +1009,13 @@ export default function App() {
                               </td>
                               <td className="py-4 px-3 text-center w-16">
                                 <input type="number" min="0"
-                                  className="w-full text-center bg-transparent outline-none font-bold text-gray-200 mono"
+                                  className="w-full text-center bg-transparent outline-none font-bold text-gray-200 mono text-mokebo-fg placeholder:text-mokebo-muted"
                                   value={item.quantity || ''} onChange={e => updateItem(item.id, 'quantity', e.target.value)} />
                               </td>
                               <td className="py-4 px-3 text-center w-20">
                                 <div className={`flex items-center justify-center gap-0.5 px-2 py-1 rounded-lg ${disc > 0 ? 'bg-mokebo-mint/15 text-mokebo-mint' : 'text-mokebo-muted'}`}>
                                   <input type="number" step="0.01" min="0" max="100"
-                                    className="w-10 text-center bg-transparent outline-none text-xs font-bold"
+                                    className="w-10 text-center bg-transparent outline-none text-xs font-bold text-mokebo-fg placeholder:text-mokebo-muted"
                                     value={item.discount || ''} onChange={e => updateItem(item.id, 'discount', e.target.value)} />
                                   <span className="text-[10px]">%</span>
                                 </div>

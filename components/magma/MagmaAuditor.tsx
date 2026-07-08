@@ -814,7 +814,7 @@ export default function App() {
                       placeholder="z.B. Winter-Aktion 2025"
                       value={newRule.label} 
                       onChange={e => setNewRule(r => ({...r, label: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium text-mokebo-fg placeholder:text-mokebo-muted" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -823,7 +823,7 @@ export default function App() {
                       type="date" 
                       value={newRule.from} 
                       onChange={e => setNewRule(r => ({...r, from: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium text-mokebo-fg placeholder:text-mokebo-muted" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -832,7 +832,7 @@ export default function App() {
                       type="date" 
                       value={newRule.to} 
                       onChange={e => setNewRule(r => ({...r, to: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-medium text-mokebo-fg placeholder:text-mokebo-muted" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -844,7 +844,7 @@ export default function App() {
                         placeholder="25"
                         value={newRule.percent} 
                         onChange={e => setNewRule(r => ({...r, percent: e.target.value}))}
-                        className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono" 
+                        className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono text-mokebo-fg placeholder:text-mokebo-muted" 
                       />
                       <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-muted">%</span>
                     </div>
@@ -862,7 +862,7 @@ export default function App() {
                             <input 
                               type="text" 
                               placeholder="SKUs filtern..." 
-                              className="w-full pl-8 pr-3 py-1.5 text-xs border-none outline-none bg-white/5 rounded-lg"
+                              className="w-full pl-8 pr-3 py-1.5 text-xs border-none outline-none bg-white/5 rounded-lg text-mokebo-fg placeholder:text-mokebo-muted"
                               onChange={(e) => {
                                 const term = e.target.value.toLowerCase();
                                 const items = document.querySelectorAll('.sku-select-item');
@@ -930,7 +930,7 @@ export default function App() {
                       placeholder="Manuelle Eingabe (z.B. SKU1, SKU2)"
                       value={newRule.skuFilter} 
                       onChange={e => setNewRule(r => ({...r, skuFilter: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-mono" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-mono text-mokebo-fg placeholder:text-mokebo-muted" 
                     />
                   </div>
                 </div>
@@ -1066,7 +1066,7 @@ export default function App() {
                       placeholder="z.B. LP4trB_USBC_schw"
                       value={newMaster.sku} 
                       onChange={e => setNewMaster(m => ({...m, sku: e.target.value}))}
-                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-mono font-bold" 
+                      className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-mono font-bold text-mokebo-fg placeholder:text-mokebo-muted" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -1078,7 +1078,7 @@ export default function App() {
                         placeholder="0.00"
                         value={newMaster.ek || ''} 
                         onChange={e => setNewMaster(m => ({...m, ek: parseNum(e.target.value)}))}
-                        className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono" 
+                        className="w-full px-4 py-3.5 border border-mokebo-border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-mokebo-mint/15 bg-white/5 transition-all font-bold font-mono text-mokebo-fg placeholder:text-mokebo-muted" 
                       />
                       <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-mokebo-muted">€</span>
                     </div>
@@ -1116,7 +1116,7 @@ export default function App() {
                         placeholder="SKU oder Alias suchen..." 
                         value={masterSearch}
                         onChange={e => setMasterSearch(e.target.value)}
-                        className="pl-9 pr-4 py-2 border border-mokebo-border rounded-xl text-xs outline-none focus:ring-2 focus:ring-gray-100 w-full sm:w-48"
+                        className="pl-9 pr-4 py-2 border border-mokebo-border rounded-xl text-xs outline-none focus:ring-2 focus:ring-mokebo-mint/20 w-full sm:w-48 bg-mokebo-surface2 text-mokebo-fg placeholder:text-mokebo-muted"
                       />
                     </div>
                     {masterPrices.length > 0 && (
@@ -1266,7 +1266,7 @@ export default function App() {
                           placeholder="SKU oder Auftrag..." 
                           value={auditSearch}
                           onChange={e => setAuditSearch(e.target.value)}
-                          className="pl-9 pr-4 py-2 border border-mokebo-border rounded-xl text-[10px] font-black outline-none focus:ring-2 focus:ring-gray-100 w-40"
+                          className="pl-9 pr-4 py-2 border border-mokebo-border rounded-xl text-[10px] font-black outline-none focus:ring-2 focus:ring-mokebo-mint/20 w-40 bg-mokebo-surface2 text-mokebo-fg placeholder:text-mokebo-muted"
                         />
                       </div>
                       <span className="text-[10px] font-black uppercase tracking-widest text-mokebo-muted">
@@ -1282,14 +1282,14 @@ export default function App() {
                             type="date" 
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
-                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-muted cursor-pointer"
+                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-muted cursor-pointer text-mokebo-fg placeholder:text-mokebo-muted"
                           />
                           <span className="text-mokebo-muted text-[10px] font-black">—</span>
                           <input 
                             type="date" 
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
-                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-muted cursor-pointer"
+                            className="text-[10px] font-black bg-transparent outline-none text-mokebo-muted cursor-pointer text-mokebo-fg placeholder:text-mokebo-muted"
                           />
                         </div>
                         {(startDate || endDate) && (
@@ -1596,7 +1596,7 @@ export default function App() {
                         type="text" 
                         value={editingMaster.sku}
                         onChange={e => setEditingMaster({...editingMaster, sku: e.target.value})}
-                        className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all font-mono"
+                        className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all font-mono text-mokebo-fg placeholder:text-mokebo-muted"
                       />
                     </div>
                     <div className="space-y-2">
@@ -1606,7 +1606,7 @@ export default function App() {
                         step="0.01"
                         value={editingMaster.ek}
                         onChange={e => setEditingMaster({...editingMaster, ek: parseNum(e.target.value)})}
-                        className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all font-mono"
+                        className="w-full px-4 py-3 border border-mokebo-border rounded-2xl text-sm font-bold bg-white/5 outline-none focus:ring-4 focus:ring-mokebo-mint/15 transition-all font-mono text-mokebo-fg placeholder:text-mokebo-muted"
                       />
                     </div>
                   </div>
@@ -1624,7 +1624,7 @@ export default function App() {
                               newAliases[idx] = e.target.value;
                               setEditingMaster({...editingMaster, aliases: newAliases});
                             }}
-                            className="flex-1 px-4 py-2 border border-mokebo-border rounded-xl text-xs font-bold bg-white/5 outline-none focus:ring-2 focus:ring-mokebo-mint/20 transition-all font-mono"
+                            className="flex-1 px-4 py-2 border border-mokebo-border rounded-xl text-xs font-bold bg-white/5 outline-none focus:ring-2 focus:ring-mokebo-mint/20 transition-all font-mono text-mokebo-fg placeholder:text-mokebo-muted"
                           />
                           <button 
                             onClick={() => {
