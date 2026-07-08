@@ -399,16 +399,16 @@ export default function App() {
 
   // Load from LocalStorage on init
   useEffect(() => {
-    const savedMaster = localStorage.getItem('brilliant_master');
-    const savedRules = localStorage.getItem('brilliant_rules');
+    const savedMaster = localStorage.getItem('magma_master');
+    const savedRules = localStorage.getItem('magma_rules');
     if (savedMaster) setMasterPrices(JSON.parse(savedMaster));
     if (savedRules) setDiscountRules(JSON.parse(savedRules));
   }, []);
 
   const syncToLocal = useCallback((master: MasterPrice[] | null, rules: DiscountRule[] | null) => {
     setIsSyncing(true);
-    if (master) localStorage.setItem('brilliant_master', JSON.stringify(master));
-    if (rules) localStorage.setItem('brilliant_rules', JSON.stringify(rules));
+    if (master) localStorage.setItem('magma_master', JSON.stringify(master));
+    if (rules) localStorage.setItem('magma_rules', JSON.stringify(rules));
     setTimeout(() => setIsSyncing(false), 500);
   }, []);
 

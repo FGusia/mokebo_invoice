@@ -208,10 +208,10 @@ export default function App() {
 
   // Load from localStorage on init
   useEffect(() => {
-    const savedMaster = localStorage.getItem('auditor_master');
+    const savedMaster = localStorage.getItem('procontour_master');
     if (savedMaster) setMasterPrices(JSON.parse(savedMaster));
     
-    const savedDraft = localStorage.getItem('auditor_draft');
+    const savedDraft = localStorage.getItem('procontour_draft');
     if (savedDraft) {
       const { items: i, metadata: m } = JSON.parse(savedDraft);
       if (i) setItems(i);
@@ -222,14 +222,14 @@ export default function App() {
   // Save master to localStorage
   useEffect(() => {
     if (masterPrices.length > 0) {
-      localStorage.setItem('auditor_master', JSON.stringify(masterPrices));
+      localStorage.setItem('procontour_master', JSON.stringify(masterPrices));
     }
   }, [masterPrices]);
 
   // Auto-save draft
   useEffect(() => {
     if (items.length > 0 || metadata.supplierName || metadata.invoiceNumber) {
-      localStorage.setItem('auditor_draft', JSON.stringify({ items, metadata }));
+      localStorage.setItem('procontour_draft', JSON.stringify({ items, metadata }));
     }
   }, [items, metadata]);
 
@@ -568,7 +568,7 @@ export default function App() {
   }, [items, filterErrors, masterPrices, searchTerm]);
 
   const saveDraft = () => {
-    localStorage.setItem('auditor_draft', JSON.stringify({ items, metadata }));
+    localStorage.setItem('procontour_draft', JSON.stringify({ items, metadata }));
     showToast('Entwurf manuell gespeichert!');
   };
 
