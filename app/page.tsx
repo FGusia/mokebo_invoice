@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Truck } from "lucide-react";
 import { MokeboMark, MokeboWordmark } from "@/components/MokeboLogo";
 import { MagmaMark } from "@/components/magma/MagmaLogo";
 import { ProcontourMark } from "@/components/procontour/ProcontourLogo";
@@ -9,17 +9,17 @@ type AppTile = {
   href: string;
   title: string;
   description: string;
-  manufacturer: string;
+  group: string;
   icon: React.ReactNode;
   available: boolean;
 };
 
-const apps: AppTile[] = [
+const herstellerApps: AppTile[] = [
   {
     href: "/magma/invoice-audit",
     title: "Rechnungsprüfung",
     description: "Automatisierte Audit von Herstellerrechnungen inkl. Aktionsrabatten & Stammdaten.",
-    manufacturer: "Magma",
+    group: "Magma",
     icon: <MagmaMark size={48} />,
     available: true,
   },
@@ -27,7 +27,7 @@ const apps: AppTile[] = [
     href: "/procontour/invoice-audit",
     title: "Rechnungsprüfung",
     description: "Rechnungsprüfung & Preisabgleich mit Stammdaten.",
-    manufacturer: "Procontour",
+    group: "Procontour",
     icon: <ProcontourMark height={40} />,
     available: true,
   },
@@ -35,11 +35,64 @@ const apps: AppTile[] = [
     href: "/brilliant/invoice-audit",
     title: "Rechnungsprüfung",
     description: "Automatisierte Audit von Herstellerrechnungen inkl. Aktionsrabatten & Stammdaten.",
-    manufacturer: "Brilliant",
+    group: "Brilliant",
     icon: <BrilliantMark height={40} />,
     available: true,
   },
 ];
+
+const logistikApps: AppTile[] = [
+  {
+    href: "#",
+    title: "Sperrgut-Check",
+    description: "Automatische Prüfung auf Sperrgut-Versand – folgt in Kürze.",
+    group: "DHL",
+    icon: <Truck size={22} strokeWidth={2.5} />,
+    available: false,
+  },
+  {
+    href: "#",
+    title: "Sperrgut-Check",
+    description: "Automatische Prüfung auf Sperrgut-Versand – folgt in Kürze.",
+    group: "GLS",
+    icon: <Truck size={22} strokeWidth={2.5} />,
+    available: false,
+  },
+];
+
+function AppGrid({ apps }: { apps: AppTile[] }) {
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {apps.map((app, i) => (
+        <Link
+          key={i}
+          href={app.href}
+          aria-disabled={!app.available}
+          className={`group relative bg-mokebo-surface border border-mokebo-border rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.25)] transition-all ${
+            app.available
+              ? "hover:shadow-lg hover:-translate-y-0.5 hover:border-mokebo-mint/50 cursor-pointer"
+              : "opacity-50 cursor-not-allowed pointer-events-none"
+          }`}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-center">{app.icon}</div>
+            {app.available && (
+              <ArrowUpRight
+                size={18}
+                className="text-mokebo-muted group-hover:text-mokebo-mint transition-colors"
+              />
+            )}
+          </div>
+          <div className="text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1">
+            {app.group}
+          </div>
+          <h3 className="font-black text-lg tracking-tight text-mokebo-fg">{app.title}</h3>
+          <p className="text-sm text-mokebo-muted font-medium mt-1">{app.description}</p>
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 export default function DashboardPage() {
   return (
@@ -60,39 +113,19 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {apps.map((app, i) => (
-            <Link
-              key={i}
-              href={app.href}
-              aria-disabled={!app.available}
-              className={`group relative bg-mokebo-surface border border-mokebo-border rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.25)] transition-all ${
-                app.available
-                  ? "hover:shadow-lg hover:-translate-y-0.5 hover:border-mokebo-mint/50 cursor-pointer"
-                  : "opacity-50 cursor-not-allowed pointer-events-none"
-              }`}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center justify-center">
-                  {app.icon}
-                </div>
-                {app.available && (
-                  <ArrowUpRight
-                    size={18}
-                    className="text-mokebo-muted group-hover:text-mokebo-mint transition-colors"
-                  />
-                )}
-              </div>
-              <div className="text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1">
-                {app.manufacturer}
-              </div>
-              <h3 className="font-black text-lg tracking-tight text-mokebo-fg">{app.title}</h3>
-              <p className="text-sm text-mokebo-muted font-medium mt-1">
-                {app.description}
-              </p>
-            </Link>
-          ))}
-        </div>
+        <section className="mb-10">
+          <h2 className="text-[11px] font-black uppercase tracking-widest text-mokebo-muted mb-4">
+            Hersteller
+          </h2>
+          <AppGrid apps={herstellerApps} />
+        </section>
+
+        <section>
+          <h2 className="text-[11px] font-black uppercase tracking-widest text-mokebo-muted mb-4">
+            Logistikdienstleister
+          </h2>
+          <AppGrid apps={logistikApps} />
+        </section>
       </div>
     </div>
   );
