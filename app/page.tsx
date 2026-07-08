@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { MokeboMark, MokeboWordmark } from "@/components/MokeboLogo";
 import { MagmaMark } from "@/components/magma/MagmaLogo";
 import { ProcontourMark } from "@/components/procontour/ProcontourLogo";
+import { BrilliantMark } from "@/components/brilliant/BrilliantLogo";
 
 type AppTile = {
   href: string;
@@ -28,6 +29,14 @@ const apps: AppTile[] = [
     description: "Rechnungsprüfung & Preisabgleich mit Stammdaten.",
     manufacturer: "Procontour",
     icon: <ProcontourMark height={40} />,
+    available: true,
+  },
+  {
+    href: "/brilliant/invoice-audit",
+    title: "Rechnungsprüfung",
+    description: "Automatisierte Audit von Herstellerrechnungen inkl. Aktionsrabatten & Stammdaten.",
+    manufacturer: "Brilliant",
+    icon: <BrilliantMark height={40} />,
     available: true,
   },
 ];
