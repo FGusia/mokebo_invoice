@@ -7,6 +7,7 @@
 
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import * as XLSX from 'xlsx';
+import Link from 'next/link';
 import { 
   Upload, 
   Trash2, 
@@ -28,7 +29,8 @@ import {
   FileText,
   Database,
   Search,
-  Download
+  Download,
+  ArrowLeft
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MagmaMark } from './MagmaLogo';
@@ -722,6 +724,13 @@ export default function App() {
         {/* ── HEADER ── */}
         <header className="no-print mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-mokebo-surface border border-mokebo-border rounded-3xl px-8 py-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-sm">
           <div className="flex items-center gap-5">
+            <Link
+              href="/"
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-mokebo-muted hover:text-mokebo-fg hover:bg-white/5 transition-all shrink-0"
+              aria-label="Zur Übersicht"
+            >
+              <ArrowLeft size={20} strokeWidth={2.5} />
+            </Link>
             <MagmaMark size={56} className="shadow-lg shadow-black/30" />
             <div>
               <div className="flex items-center gap-3">
