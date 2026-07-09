@@ -416,8 +416,7 @@ export default function GlsAuditor() {
       const matchesSearch =
         !search ||
         item.paketnummer.toLowerCase().includes(searchLower) ||
-        (item.pNummer && item.pNummer.toLowerCase().includes(searchLower)) ||
-        item.empfaenger.toLowerCase().includes(searchLower);
+        (item.pNummer && item.pNummer.toLowerCase().includes(searchLower));
       return matchesFilter && matchesSearch;
     });
   }, [rechnung, filter, search]);
@@ -450,11 +449,13 @@ export default function GlsAuditor() {
   const handleExport = () => {
     if (!rechnung || selection.size === 0) return;
     const selectedRows = rechnung.filter((r) => selection.has(r.id));
-    const headers = 'Paketnummer;P-Nummer;Bezeichnung;Nettobetrag;Status;Empfängername';
+    const headers = 'Paketnummer;P-Nummer;Bezeichnung;Nettobetrag;Status;Laut Stammdaten';
     const csvContent = selectedRows
       .map(
         (r) =>
-          `${r.paketnummer};${r.pNummer || ''};${r.bezeichnung};${r.betrag.toLocaleString('de-DE')};${r.type};${r.empfaenger}`
+          `${r.paketnummer};${r.pNummer || ''};${r.bezeichnung};${r.betrag.toLocaleString('de-DE')};${r.type};${
+            (r.pNummer && stammdaten?.data[r.pNummer]) || ''
+          }`
       )
       .join('\n');
 
@@ -989,7 +990,7 @@ export default function GlsAuditor() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Suche nach Paketnummer, P-Nummer oder Empfänger..."
+                    placeholder="Suche nach Paketnummer oder P-Nummer..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2.5 bg-white/5 border border-mokebo-border rounded-xl text-sm text-mokebo-fg placeholder:text-mokebo-muted focus:ring-4 focus:ring-mokebo-mint/15 outline-none transition-all"
@@ -1023,7 +1024,7 @@ export default function GlsAuditor() {
                     <th className="px-4 py-4">Bezeichnung</th>
                     <th className="px-4 py-4 text-right">Betrag</th>
                     <th className="px-4 py-4">Status</th>
-                    <th className="px-4 py-4">Empfänger</th>
+                    <th className="px-4 py-4">Laut Stammdaten</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-mokebo-border/50">
@@ -1069,7 +1070,13 @@ export default function GlsAuditor() {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-4 text-sm text-mokebo-muted truncate max-w-[200px]">{item.empfaenger}</td>
+                        <td className="px-4 py-4 text-sm">
+                          {item.pNummer && stammdaten?.data[item.pNummer] ? (
+                            <span className="font-bold text-mokebo-fg">{stammdaten.data[item.pNummer]}</span>
+                          ) : (
+                            <span className="text-mokebo-muted">–</span>
+                          )}
+                        </td>
                       </tr>
                     );
                   })}
