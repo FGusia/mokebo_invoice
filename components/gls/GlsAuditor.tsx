@@ -484,14 +484,35 @@ export default function GlsAuditor() {
   }, [rechnung, filter, search]);
 
   const stats = useMemo(() => {
-    if (!rechnung) return { fehl: 0, gut: 0, sammel: 0, abweichung: 0, abweichungDiff: 0, selected: 0 };
+    if (!rechnung)
+      return {
+        fehl: 0,
+        gut: 0,
+        sammel: 0,
+        abweichung: 0,
+        abweichungDiff: 0,
+        abweichungPositivSumme: 0,
+        abweichungPositivAnzahl: 0,
+        abweichungNegativSumme: 0,
+        abweichungNegativAnzahl: 0,
+        abweichungOhneTarifAnzahl: 0,
+        selected: 0,
+      };
     const abweichungRows = rechnung.filter((r) => r.type === 'ABWEICHUNG');
+    const abweichungPositiv = abweichungRows.filter((r) => (r.differenz ?? 0) > 0);
+    const abweichungNegativ = abweichungRows.filter((r) => (r.differenz ?? 0) < 0);
+    const abweichungOhneTarif = abweichungRows.filter((r) => r.differenz == null);
     return {
       fehl: rechnung.filter((r) => r.type === 'FEHLBUCHUNG').reduce((sum, r) => sum + r.betrag, 0),
       gut: rechnung.filter((r) => r.type === 'GUTSCHRIFT').reduce((sum, r) => sum + r.betrag, 0),
       sammel: rechnung.filter((r) => r.type === 'SAMMELPOSTEN').reduce((sum, r) => sum + r.betrag, 0),
       abweichung: abweichungRows.reduce((sum, r) => sum + r.betrag, 0),
       abweichungDiff: abweichungRows.reduce((sum, r) => sum + (r.differenz ?? 0), 0),
+      abweichungPositivSumme: abweichungPositiv.reduce((sum, r) => sum + (r.differenz ?? 0), 0),
+      abweichungPositivAnzahl: abweichungPositiv.length,
+      abweichungNegativSumme: abweichungNegativ.reduce((sum, r) => sum + (r.differenz ?? 0), 0),
+      abweichungNegativAnzahl: abweichungNegativ.length,
+      abweichungOhneTarifAnzahl: abweichungOhneTarif.length,
       selected: rechnung.filter((r) => selection.has(r.id)).reduce((sum, r) => sum + r.betrag, 0),
     };
   }, [rechnung, selection]);
@@ -618,14 +639,26 @@ export default function GlsAuditor() {
                     </div>
                   </div>
                   <div className="bg-mokebo-surface p-3 rounded-2xl border border-mokebo-border">
-                    <div className="text-[10px] text-mokebo-muted uppercase mb-1 font-bold">Abweichungen</div>
-                    <div className="text-lg font-black text-sky-400">
-                      {stats.abweichung.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                    <div className="text-[10px] text-mokebo-muted uppercase mb-1 font-bold">
+                      Abweichungen ({stats.abweichungPositivAnzahl + stats.abweichungNegativAnzahl + stats.abweichungOhneTarifAnzahl})
                     </div>
-                    {stats.abweichungDiff !== 0 && (
-                      <div className="text-[10px] font-bold text-mokebo-muted mt-0.5">
-                        {stats.abweichungDiff > 0 ? '+' : ''}
-                        {stats.abweichungDiff.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })} ggü. Soll
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-bold text-emerald-400">Zu unseren Gunsten</span>
+                      <span className="text-sm font-black text-emerald-400 whitespace-nowrap">
+                        +{stats.abweichungPositivSumme.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                        <span className="text-[9px] text-mokebo-muted font-bold ml-1">({stats.abweichungPositivAnzahl})</span>
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 mt-1.5">
+                      <span className="text-[10px] font-bold text-mokebo-rustlight">Zu unseren Ungunsten</span>
+                      <span className="text-sm font-black text-mokebo-rustlight whitespace-nowrap">
+                        {stats.abweichungNegativSumme.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                        <span className="text-[9px] text-mokebo-muted font-bold ml-1">({stats.abweichungNegativAnzahl})</span>
+                      </span>
+                    </div>
+                    {stats.abweichungOhneTarifAnzahl > 0 && (
+                      <div className="text-[9px] font-bold text-mokebo-muted mt-1.5">
+                        {stats.abweichungOhneTarifAnzahl} ohne Tarif – Preis unbekannt
                       </div>
                     )}
                   </div>
