@@ -1143,6 +1143,82 @@ export default function GlsAuditor() {
           </div>
         ) : (
           <>
+              {/* Report: Fehlbuchungen & Abweichungen gruppiert */}
+              {report.length > 0 && (
+                <div className="p-6 border-b-4 border-mokebo-dark bg-mokebo-surface2/40">
+                  <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
+                    <div>
+                      <h2 className="text-lg font-black text-mokebo-fg">Report</h2>
+                      <p className="text-xs text-mokebo-muted font-medium mt-0.5">
+                        Fehlbuchungen &amp; Abweichungen, gruppiert nach Korrekt/Berechnet.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleReportExport}
+                      className="flex items-center gap-2 bg-mokebo-green hover:bg-mokebo-dark text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-black/30"
+                    >
+                      <Download size={14} />
+                      Export (.csv)
+                    </button>
+                  </div>
+
+                  <div className="border border-mokebo-border rounded-2xl overflow-hidden">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="text-[10px] uppercase font-black text-mokebo-muted border-b border-mokebo-border bg-white/5 tracking-widest">
+                          <th className="py-3.5 px-6">Korrekt / Berechnet</th>
+                          <th className="py-3.5 px-4 text-right">Anzahl</th>
+                          <th className="py-3.5 px-6 text-right">Summe</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {report.map((g) => {
+                          const { guenstig, unguenstig } = klassifiziereGruppe(g);
+                          const rowClass = unguenstig ? 'bg-mokebo-rust/10' : guenstig ? 'bg-emerald-500/10' : '';
+                          const textClass = unguenstig
+                            ? 'text-mokebo-rustlight'
+                            : guenstig
+                            ? 'text-emerald-400'
+                            : 'text-mokebo-fg';
+                          return (
+                            <tr key={g.key} className={`${rowClass} transition-colors`}>
+                              <td className="py-3 px-6 text-sm">
+                                <span className="font-bold text-mokebo-fg">Korrekt: {g.soll}</span>
+                                <span className="text-mokebo-muted"> / Berechnet: </span>
+                                <span className="font-bold text-mokebo-fg">{g.ist}</span>
+                                {guenstig && (
+                                  <span className="ml-2 text-[9px] font-black text-emerald-400 uppercase tracking-widest">
+                                    zu unseren Gunsten
+                                  </span>
+                                )}
+                              </td>
+                              <td className="py-3 px-4 text-right text-sm font-mono text-mokebo-muted">{g.anzahl}</td>
+                              <td className={`py-3 px-6 text-right text-sm font-black font-mono ${textClass}`}>
+                                {guenstig ? '−' : ''}
+                                {g.summe.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot>
+                        <tr className="border-t border-mokebo-border bg-white/5">
+                          <td className="py-3.5 px-6 text-xs font-black uppercase tracking-widest text-mokebo-muted">
+                            Summe (netto)
+                          </td>
+                          <td className="py-3.5 px-4 text-right text-sm font-mono text-mokebo-muted">
+                            {report.reduce((sum, g) => sum + g.anzahl, 0)}
+                          </td>
+                          <td className="py-3.5 px-6 text-right text-sm font-black font-mono text-mokebo-fg">
+                            {reportSumme.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              )}
+
             {/* Filter Bar */}
             <div className="bg-mokebo-surface border-b border-mokebo-border p-4 flex flex-col gap-4">
               <div className="flex items-center justify-between flex-wrap gap-3">
@@ -1286,81 +1362,6 @@ export default function GlsAuditor() {
                 <div className="p-12 text-center text-mokebo-muted font-medium">Keine Daten gefunden.</div>
               )}
 
-              {/* Report: Fehlbuchungen & Abweichungen gruppiert */}
-              {report.length > 0 && (
-                <div className="p-6 border-t-4 border-mokebo-dark">
-                  <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
-                    <div>
-                      <h2 className="text-lg font-black text-mokebo-fg">Report</h2>
-                      <p className="text-xs text-mokebo-muted font-medium mt-0.5">
-                        Fehlbuchungen &amp; Abweichungen, gruppiert nach Korrekt/Berechnet.
-                      </p>
-                    </div>
-                    <button
-                      onClick={handleReportExport}
-                      className="flex items-center gap-2 bg-mokebo-green hover:bg-mokebo-dark text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-black/30"
-                    >
-                      <Download size={14} />
-                      Export (.csv)
-                    </button>
-                  </div>
-
-                  <div className="border border-mokebo-border rounded-2xl overflow-hidden">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="text-[10px] uppercase font-black text-mokebo-muted border-b border-mokebo-border bg-white/5 tracking-widest">
-                          <th className="py-3.5 px-6">Korrekt / Berechnet</th>
-                          <th className="py-3.5 px-4 text-right">Anzahl</th>
-                          <th className="py-3.5 px-6 text-right">Summe</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5">
-                        {report.map((g) => {
-                          const { guenstig, unguenstig } = klassifiziereGruppe(g);
-                          const rowClass = unguenstig ? 'bg-mokebo-rust/10' : guenstig ? 'bg-emerald-500/10' : '';
-                          const textClass = unguenstig
-                            ? 'text-mokebo-rustlight'
-                            : guenstig
-                            ? 'text-emerald-400'
-                            : 'text-mokebo-fg';
-                          return (
-                            <tr key={g.key} className={`${rowClass} transition-colors`}>
-                              <td className="py-3 px-6 text-sm">
-                                <span className="font-bold text-mokebo-fg">Korrekt: {g.soll}</span>
-                                <span className="text-mokebo-muted"> / Berechnet: </span>
-                                <span className="font-bold text-mokebo-fg">{g.ist}</span>
-                                {guenstig && (
-                                  <span className="ml-2 text-[9px] font-black text-emerald-400 uppercase tracking-widest">
-                                    zu unseren Gunsten
-                                  </span>
-                                )}
-                              </td>
-                              <td className="py-3 px-4 text-right text-sm font-mono text-mokebo-muted">{g.anzahl}</td>
-                              <td className={`py-3 px-6 text-right text-sm font-black font-mono ${textClass}`}>
-                                {guenstig ? '−' : ''}
-                                {g.summe.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                      <tfoot>
-                        <tr className="border-t border-mokebo-border bg-white/5">
-                          <td className="py-3.5 px-6 text-xs font-black uppercase tracking-widest text-mokebo-muted">
-                            Summe (netto)
-                          </td>
-                          <td className="py-3.5 px-4 text-right text-sm font-mono text-mokebo-muted">
-                            {report.reduce((sum, g) => sum + g.anzahl, 0)}
-                          </td>
-                          <td className="py-3.5 px-6 text-right text-sm font-black font-mono text-mokebo-fg">
-                            {reportSumme.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </div>
-              )}
             </div>
           </>
         )}
