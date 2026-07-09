@@ -91,6 +91,13 @@ const STATUS_CONFIG: Record<
 };
 
 const STORAGE_KEY = 'gls_stammdaten';
+const TARIFE_STORAGE_KEY = 'gls_tarife';
+
+const DEFAULT_TARIFE: Record<string, number> = {
+  'Nicht Sortierfähig': 0,
+  'Überlänge': 0,
+  'Übermaße': 0,
+};
 
 // ── Helpers ────────────────────────────────────────────────────────
 
@@ -174,6 +181,11 @@ export default function GlsAuditor() {
   const [editDraft, setEditDraft] = useState({ pNummer: '', kategorie: '' });
   const [newEntry, setNewEntry] = useState({ pNummer: '', kategorie: '' });
   const [deleteConfirmKey, setDeleteConfirmKey] = useState<string | null>(null);
+  const [tarife, setTarife] = useState<Record<string, number>>(DEFAULT_TARIFE);
+  const [editingTarifKey, setEditingTarifKey] = useState<string | null>(null);
+  const [tarifEditDraft, setTarifEditDraft] = useState({ bezeichnung: '', preis: '' });
+  const [newTarif, setNewTarif] = useState({ bezeichnung: '', preis: '' });
+  const [deleteTarifConfirmKey, setDeleteTarifConfirmKey] = useState<string | null>(null);
 
   // Load stammdaten from localStorage on mount
   useEffect(() => {
@@ -183,6 +195,15 @@ export default function GlsAuditor() {
         setStammdaten(JSON.parse(saved));
       } catch (e) {
         console.error('Fehler beim Laden der Stammdaten', e);
+      }
+    }
+
+    const savedTarife = window.localStorage.getItem(TARIFE_STORAGE_KEY);
+    if (savedTarife) {
+      try {
+        setTarife(JSON.parse(savedTarife));
+      } catch (e) {
+        console.error('Fehler beim Laden der Tarife', e);
       }
     }
   }, []);
@@ -275,6 +296,51 @@ export default function GlsAuditor() {
     const nextData = { ...(stammdaten?.data ?? {}), [pNummer]: kategorie };
     persistStammdaten(nextData);
     setNewEntry({ pNummer: '', kategorie: '' });
+  };
+
+  const persistTarife = useCallback((next: Record<string, number>) => {
+    window.localStorage.setItem(TARIFE_STORAGE_KEY, JSON.stringify(next));
+    setTarife(next);
+  }, []);
+
+  const startEditTarif = (bezeichnung: string, preis: number) => {
+    setEditingTarifKey(bezeichnung);
+    setTarifEditDraft({ bezeichnung, preis: preis.toLocaleString('de-DE') });
+  };
+
+  const cancelEditTarif = () => {
+    setEditingTarifKey(null);
+    setTarifEditDraft({ bezeichnung: '', preis: '' });
+  };
+
+  const saveEditTarif = (originalKey: string) => {
+    const nextBezeichnung = tarifEditDraft.bezeichnung.trim();
+    const nextPreis = parseGermanFloat(tarifEditDraft.preis);
+    if (!nextBezeichnung) return;
+
+    const nextTarife = { ...tarife };
+    if (nextBezeichnung !== originalKey) {
+      delete nextTarife[originalKey];
+    }
+    nextTarife[nextBezeichnung] = nextPreis;
+    persistTarife(nextTarife);
+    cancelEditTarif();
+  };
+
+  const deleteTarif = (bezeichnung: string) => {
+    const nextTarife = { ...tarife };
+    delete nextTarife[bezeichnung];
+    persistTarife(nextTarife);
+    setDeleteTarifConfirmKey(null);
+  };
+
+  const addTarif = () => {
+    const bezeichnung = newTarif.bezeichnung.trim();
+    const preis = parseGermanFloat(newTarif.preis);
+    if (!bezeichnung) return;
+    const nextTarife = { ...tarife, [bezeichnung]: preis };
+    persistTarife(nextTarife);
+    setNewTarif({ bezeichnung: '', preis: '' });
   };
 
   const handleStammdatenUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -549,6 +615,146 @@ export default function GlsAuditor() {
                     onChange={(e) => setStammdatenSearch(e.target.value)}
                     className="pl-9 pr-4 py-2.5 bg-white/5 border border-mokebo-border rounded-xl text-sm text-mokebo-fg placeholder:text-mokebo-muted focus:ring-4 focus:ring-mokebo-mint/15 outline-none transition-all w-72"
                   />
+                </div>
+              </div>
+
+              {/* Zuschlag-Tarife */}
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl overflow-hidden">
+                <div className="px-6 py-5 border-b border-mokebo-border bg-white/5">
+                  <h3 className="font-black text-sm uppercase tracking-widest text-mokebo-muted">Zuschlag-Tarife</h3>
+                  <p className="text-[11px] text-mokebo-muted font-medium mt-1">
+                    Aktuelle Kosten je Zuschlagsart – bei Preisänderungen hier anpassen.
+                  </p>
+                </div>
+
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="text-[10px] uppercase font-black text-mokebo-muted border-b border-mokebo-border bg-white/5 tracking-widest">
+                      <th className="py-3.5 px-6">Bezeichnung</th>
+                      <th className="py-3.5 px-4 text-right">Preis</th>
+                      <th className="py-3.5 px-6 text-right">Aktionen</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {Object.entries(tarife)
+                      .sort(([a], [b]) => a.localeCompare(b))
+                      .map(([bezeichnung, preis]) => (
+                        <tr key={bezeichnung} className="group hover:bg-white/5 transition-colors">
+                          {editingTarifKey === bezeichnung ? (
+                            <>
+                              <td className="py-3 px-6">
+                                <input
+                                  type="text"
+                                  value={tarifEditDraft.bezeichnung}
+                                  onChange={(e) => setTarifEditDraft((prev) => ({ ...prev, bezeichnung: e.target.value }))}
+                                  className="w-full px-2 py-1.5 bg-white/5 border border-mokebo-border rounded-lg text-xs text-mokebo-fg outline-none focus:ring-2 focus:ring-mokebo-mint/20"
+                                />
+                              </td>
+                              <td className="py-3 px-4">
+                                <input
+                                  type="text"
+                                  value={tarifEditDraft.preis}
+                                  onChange={(e) => setTarifEditDraft((prev) => ({ ...prev, preis: e.target.value }))}
+                                  className="w-full px-2 py-1.5 bg-white/5 border border-mokebo-border rounded-lg text-xs font-mono text-right text-mokebo-fg outline-none focus:ring-2 focus:ring-mokebo-mint/20"
+                                />
+                              </td>
+                              <td className="py-3 px-6 text-right">
+                                <div className="flex items-center justify-end gap-2">
+                                  <button
+                                    onClick={() => saveEditTarif(bezeichnung)}
+                                    className="p-2 text-mokebo-mint hover:bg-mokebo-mint/15 rounded-lg transition-all"
+                                    title="Speichern"
+                                  >
+                                    <Check size={14} />
+                                  </button>
+                                  <button
+                                    onClick={cancelEditTarif}
+                                    className="p-2 text-mokebo-muted hover:bg-white/5 rounded-lg transition-all"
+                                    title="Abbrechen"
+                                  >
+                                    <X size={14} />
+                                  </button>
+                                </div>
+                              </td>
+                            </>
+                          ) : (
+                            <>
+                              <td className="py-3.5 px-6 text-sm font-bold text-mokebo-fg">{bezeichnung}</td>
+                              <td className="py-3.5 px-4 text-right font-mono font-black text-sm text-mokebo-mint">
+                                {preis.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                              </td>
+                              <td className="py-3.5 px-6 text-right">
+                                {deleteTarifConfirmKey === bezeichnung ? (
+                                  <div className="flex items-center justify-end gap-2 text-[10px] font-black text-mokebo-rustlight">
+                                    <span>Löschen?</span>
+                                    <button
+                                      onClick={() => deleteTarif(bezeichnung)}
+                                      className="bg-mokebo-rust text-white px-2.5 py-1 rounded-lg hover:bg-mokebo-dark transition-all"
+                                    >
+                                      JA
+                                    </button>
+                                    <button
+                                      onClick={() => setDeleteTarifConfirmKey(null)}
+                                      className="bg-mokebo-surface2 border border-mokebo-border text-mokebo-muted px-2 py-1 rounded-lg hover:bg-white/5 transition-all"
+                                    >
+                                      NEIN
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center justify-end gap-2">
+                                    <button
+                                      onClick={() => startEditTarif(bezeichnung, preis)}
+                                      className="p-2 text-mokebo-muted hover:text-mokebo-mint hover:bg-mokebo-mint/15 rounded-lg transition-all"
+                                      title="Bearbeiten"
+                                    >
+                                      <Pencil size={14} />
+                                    </button>
+                                    <button
+                                      onClick={() => setDeleteTarifConfirmKey(bezeichnung)}
+                                      className="p-2 text-mokebo-muted hover:text-mokebo-rustlight hover:bg-mokebo-rust/15 rounded-lg transition-all"
+                                      title="Löschen"
+                                    >
+                                      <Trash2 size={14} />
+                                    </button>
+                                  </div>
+                                )}
+                              </td>
+                            </>
+                          )}
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+
+                <div className="px-6 py-4 border-t border-mokebo-border bg-white/5 flex flex-wrap items-end gap-3">
+                  <div className="flex-1 min-w-[160px]">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1.5">Neue Zuschlagsart</label>
+                    <input
+                      type="text"
+                      placeholder="z. B. Gurtmaß"
+                      value={newTarif.bezeichnung}
+                      onChange={(e) => setNewTarif((prev) => ({ ...prev, bezeichnung: e.target.value }))}
+                      className="w-full px-3 py-2 bg-white/5 border border-mokebo-border rounded-xl text-sm text-mokebo-fg placeholder:text-mokebo-muted focus:ring-4 focus:ring-mokebo-mint/15 outline-none transition-all"
+                    />
+                  </div>
+                  <div className="w-40">
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1.5">Preis (€)</label>
+                    <input
+                      type="text"
+                      placeholder="0,00"
+                      value={newTarif.preis}
+                      onChange={(e) => setNewTarif((prev) => ({ ...prev, preis: e.target.value }))}
+                      className="w-full px-3 py-2 bg-white/5 border border-mokebo-border rounded-xl text-sm font-mono text-right text-mokebo-fg placeholder:text-mokebo-muted focus:ring-4 focus:ring-mokebo-mint/15 outline-none transition-all"
+                    />
+                  </div>
+                  <button
+                    onClick={addTarif}
+                    disabled={!newTarif.bezeichnung.trim()}
+                    className="flex items-center gap-2 bg-mokebo-green hover:bg-mokebo-dark disabled:bg-mokebo-surface2 disabled:text-mokebo-muted text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-black/30"
+                  >
+                    <Plus size={14} />
+                    Hinzufügen
+                  </button>
                 </div>
               </div>
 
