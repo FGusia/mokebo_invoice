@@ -32,7 +32,10 @@ type RechnungRow = {
   pNummer: string | null;
   bezeichnung: string;
   betrag: number;
-  type: 'OK' | 'FEHLBUCHUNG' | 'UNBEKANNT' | 'GUTSCHRIFT' | 'STORNO' | 'SAMMELPOSTEN';
+  type: 'OK' | 'FEHLBUCHUNG' | 'ABWEICHUNG' | 'UNBEKANNT' | 'GUTSCHRIFT' | 'STORNO' | 'SAMMELPOSTEN';
+  billKategorie: string | null;
+  erwarteterPreis: number | null;
+  differenz: number | null;
   empfaenger: string;
   raw: Record<string, string>;
 };
@@ -54,6 +57,23 @@ const SPERRGUT_BEZEICHNUNGEN = [
   'gurtmaß',
 ];
 
+// Ordnet den Formulierungen auf der GLS-Rechnung eine unserer Zuschlags-Kategorien zu,
+// damit wir erkennen können, ALS WAS GLS tatsächlich abgerechnet hat (nicht nur DASS).
+const BEZEICHNUNG_KATEGORIE_MAP: { keyword: string; kategorie: string }[] = [
+  { keyword: 'nicht sorterfähig', kategorie: 'Nicht Sortierfähig' },
+  { keyword: 'nicht sortierfähig', kategorie: 'Nicht Sortierfähig' },
+  { keyword: 'nicht bandfähig', kategorie: 'Nicht Sortierfähig' },
+  { keyword: 'überlänge', kategorie: 'Überlänge' },
+  { keyword: 'übermaß', kategorie: 'Übermaße' },
+  { keyword: 'gurtmaß', kategorie: 'Übermaße' },
+];
+
+const erkenneBillKategorie = (bezeichnung: string): string | null => {
+  const lower = bezeichnung.toLowerCase();
+  const match = BEZEICHNUNG_KATEGORIE_MAP.find((m) => lower.includes(m.keyword));
+  return match ? match.kategorie : null;
+};
+
 const STATUS_CONFIG: Record<
   RechnungRow['type'],
   { label: string; badgeClass: string; rowClass: string }
@@ -62,6 +82,11 @@ const STATUS_CONFIG: Record<
     label: 'FEHLBUCHUNG',
     badgeClass: 'bg-mokebo-rust text-white',
     rowClass: 'bg-mokebo-rust/10',
+  },
+  ABWEICHUNG: {
+    label: 'ABWEICHUNG',
+    badgeClass: 'bg-sky-500/20 text-sky-400 border border-sky-500/30',
+    rowClass: 'bg-sky-500/5',
   },
   UNBEKANNT: {
     label: 'UNBEKANNT',
@@ -381,6 +406,9 @@ export default function GlsAuditor() {
         const pNummer = extractPNummer(referenz);
 
         let type: RechnungRow['type'] = 'OK';
+        let billKategorie: string | null = null;
+        let erwarteterPreis: number | null = null;
+        let differenz: number | null = null;
 
         if (!paketnummer || paketnummer === '-') {
           type = 'SAMMELPOSTEN';
@@ -390,14 +418,37 @@ export default function GlsAuditor() {
           type = 'GUTSCHRIFT';
         } else if (istSperrgut(bezeichnung)) {
           const kat = pNummer ? stammdaten?.data[pNummer] : undefined;
+          billKategorie = erkenneBillKategorie(bezeichnung);
+
           if (kat === 'Kein Zuschlag') {
+            // Es hätte laut Stammdaten gar kein Zuschlag anfallen dürfen.
             type = 'FEHLBUCHUNG';
           } else if (!kat) {
             type = 'UNBEKANNT';
+          } else if (billKategorie && billKategorie !== kat) {
+            // Es sollte laut Stammdaten eine andere (evtl. teurere) Zuschlagsart sein,
+            // als GLS tatsächlich abgerechnet hat – z.B. "Nicht Sortierfähig" statt "Übermaße".
+            type = 'ABWEICHUNG';
+            if (kat in tarife) {
+              erwarteterPreis = tarife[kat];
+              differenz = erwarteterPreis - Math.abs(betrag);
+            }
           }
         }
 
-        return { id: index, paketnummer, pNummer, bezeichnung, betrag, type, empfaenger, raw: row };
+        return {
+          id: index,
+          paketnummer,
+          pNummer,
+          bezeichnung,
+          betrag,
+          type,
+          billKategorie,
+          erwarteterPreis,
+          differenz,
+          empfaenger,
+          raw: row,
+        };
       });
 
       setRechnung(processed);
@@ -422,11 +473,14 @@ export default function GlsAuditor() {
   }, [rechnung, filter, search]);
 
   const stats = useMemo(() => {
-    if (!rechnung) return { fehl: 0, gut: 0, sammel: 0, selected: 0 };
+    if (!rechnung) return { fehl: 0, gut: 0, sammel: 0, abweichung: 0, abweichungDiff: 0, selected: 0 };
+    const abweichungRows = rechnung.filter((r) => r.type === 'ABWEICHUNG');
     return {
       fehl: rechnung.filter((r) => r.type === 'FEHLBUCHUNG').reduce((sum, r) => sum + r.betrag, 0),
       gut: rechnung.filter((r) => r.type === 'GUTSCHRIFT').reduce((sum, r) => sum + r.betrag, 0),
       sammel: rechnung.filter((r) => r.type === 'SAMMELPOSTEN').reduce((sum, r) => sum + r.betrag, 0),
+      abweichung: abweichungRows.reduce((sum, r) => sum + r.betrag, 0),
+      abweichungDiff: abweichungRows.reduce((sum, r) => sum + (r.differenz ?? 0), 0),
       selected: rechnung.filter((r) => selection.has(r.id)).reduce((sum, r) => sum + r.betrag, 0),
     };
   }, [rechnung, selection]);
@@ -471,7 +525,7 @@ export default function GlsAuditor() {
     URL.revokeObjectURL(url);
   };
 
-  const filterOptions = ['Alle', 'Fehlbuchung', 'Unbekannt', 'Gutschrift', 'Storno', 'Sammelposten'];
+  const filterOptions = ['Alle', 'Fehlbuchung', 'Abweichung', 'Unbekannt', 'Gutschrift', 'Storno', 'Sammelposten'];
 
   return (
     <div className="flex h-screen overflow-hidden bg-mokebo-dark text-mokebo-fg font-sans">
@@ -551,6 +605,18 @@ export default function GlsAuditor() {
                     <div className="text-lg font-black text-mokebo-rustlight">
                       {stats.fehl.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
                     </div>
+                  </div>
+                  <div className="bg-mokebo-surface p-3 rounded-2xl border border-mokebo-border">
+                    <div className="text-[10px] text-mokebo-muted uppercase mb-1 font-bold">Abweichungen</div>
+                    <div className="text-lg font-black text-sky-400">
+                      {stats.abweichung.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                    </div>
+                    {stats.abweichungDiff !== 0 && (
+                      <div className="text-[10px] font-bold text-mokebo-muted mt-0.5">
+                        {stats.abweichungDiff > 0 ? '+' : ''}
+                        {stats.abweichungDiff.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })} ggü. Soll
+                      </div>
+                    )}
                   </div>
                   <div className="bg-mokebo-surface p-3 rounded-2xl border border-mokebo-border">
                     <div className="text-[10px] text-mokebo-muted uppercase mb-1 font-bold">Gutschriften</div>
@@ -1053,7 +1119,14 @@ export default function GlsAuditor() {
                         </td>
                         <td className="px-4 py-4 text-sm font-mono text-mokebo-muted">{item.paketnummer}</td>
                         <td className="px-4 py-4 text-sm font-bold text-mokebo-fg">{item.pNummer || '-'}</td>
-                        <td className="px-4 py-4 text-sm text-mokebo-muted">{item.bezeichnung}</td>
+                        <td className="px-4 py-4 text-sm text-mokebo-muted">
+                          {item.bezeichnung}
+                          {item.type === 'ABWEICHUNG' && item.billKategorie && (
+                            <div className="text-[10px] font-bold text-sky-400 mt-0.5">
+                              Abgerechnet als „{item.billKategorie}"
+                            </div>
+                          )}
+                        </td>
                         <td
                           className={`px-4 py-4 text-sm font-bold text-right ${
                             item.betrag < 0 ? 'text-emerald-400' : 'text-mokebo-fg'
@@ -1072,7 +1145,19 @@ export default function GlsAuditor() {
                         </td>
                         <td className="px-4 py-4 text-sm">
                           {item.pNummer && stammdaten?.data[item.pNummer] ? (
-                            <span className="font-bold text-mokebo-fg">{stammdaten.data[item.pNummer]}</span>
+                            <>
+                              <span className="font-bold text-mokebo-fg">{stammdaten.data[item.pNummer]}</span>
+                              {item.type === 'ABWEICHUNG' && item.differenz != null && (
+                                <div
+                                  className={`text-[10px] font-bold mt-0.5 ${
+                                    item.differenz > 0 ? 'text-emerald-400' : 'text-mokebo-rustlight'
+                                  }`}
+                                >
+                                  {item.differenz > 0 ? '+' : ''}
+                                  {item.differenz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })} ggü. berechnet
+                                </div>
+                              )}
+                            </>
                           ) : (
                             <span className="text-mokebo-muted">–</span>
                           )}
