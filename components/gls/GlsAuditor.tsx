@@ -425,13 +425,24 @@ export default function GlsAuditor() {
             type = 'FEHLBUCHUNG';
           } else if (!kat) {
             type = 'UNBEKANNT';
-          } else if (billKategorie && billKategorie !== kat) {
-            // Es sollte laut Stammdaten eine andere (evtl. teurere) Zuschlagsart sein,
-            // als GLS tatsächlich abgerechnet hat – z.B. "Nicht Sortierfähig" statt "Übermaße".
-            type = 'ABWEICHUNG';
-            if (kat in tarife) {
-              erwarteterPreis = tarife[kat];
-              differenz = erwarteterPreis - Math.abs(betrag);
+          } else {
+            // Beide Seiten über dieselbe Kanonisierung vergleichen, damit Schreibweisen
+            // wie "sorterfähig"/"sortierfähig", Groß-/Kleinschreibung oder Zusätze wie
+            // "Retoure"/"(E)" nicht fälschlich als Abweichung gewertet werden.
+            const sollKanonisch = erkenneBillKategorie(kat) ?? kat;
+            const stimmtUeberein =
+              !billKategorie ||
+              billKategorie.trim().toLowerCase() === sollKanonisch.trim().toLowerCase();
+
+            if (!stimmtUeberein) {
+              // Es sollte laut Stammdaten eine andere (evtl. teurere) Zuschlagsart sein,
+              // als GLS tatsächlich abgerechnet hat – z.B. "Nicht Sortierfähig" statt "Übermaße".
+              type = 'ABWEICHUNG';
+              const tarifKey = sollKanonisch in tarife ? sollKanonisch : kat in tarife ? kat : null;
+              if (tarifKey) {
+                erwarteterPreis = tarife[tarifKey];
+                differenz = erwarteterPreis - Math.abs(betrag);
+              }
             }
           }
         }
