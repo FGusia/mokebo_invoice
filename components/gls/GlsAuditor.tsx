@@ -200,7 +200,7 @@ export default function GlsAuditor() {
   const [search, setSearch] = useState('');
   const [selection, setSelection] = useState<Set<number>>(new Set());
   const [modal, setModal] = useState<ModalState | null>(null);
-  const [mainView, setMainView] = useState<'rechnung' | 'stammdaten'>('rechnung');
+  const [mainView, setMainView] = useState<'rechnung' | 'stammdaten' | 'report'>('rechnung');
   const [stammdatenSearch, setStammdatenSearch] = useState('');
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editDraft, setEditDraft] = useState({ pNummer: '', kategorie: '' });
@@ -517,6 +517,61 @@ export default function GlsAuditor() {
     };
   }, [rechnung, selection]);
 
+  type ReportGruppe = {
+    key: string;
+    soll: string;
+    ist: string;
+    anzahl: number;
+    summe: number;
+    diffSumme: number;
+    diffBekannt: boolean;
+  };
+
+  const report = useMemo<ReportGruppe[]>(() => {
+    if (!rechnung) return [];
+    const gruppen: Record<string, ReportGruppe> = {};
+
+    rechnung
+      .filter((r) => r.type === 'FEHLBUCHUNG' || r.type === 'ABWEICHUNG')
+      .forEach((r) => {
+        const soll = (r.pNummer && stammdaten?.data[r.pNummer]) || 'Kein Zuschlag';
+        const ist = r.billKategorie ?? r.bezeichnung;
+        const key = `${soll}|||${ist}`;
+
+        if (!gruppen[key]) {
+          gruppen[key] = { key, soll, ist, anzahl: 0, summe: 0, diffSumme: 0, diffBekannt: false };
+        }
+        gruppen[key].anzahl += 1;
+        gruppen[key].summe += r.betrag;
+        if (r.differenz != null) {
+          gruppen[key].diffSumme += r.differenz;
+          gruppen[key].diffBekannt = true;
+        }
+      });
+
+    return Object.values(gruppen).sort((a, b) => b.summe - a.summe);
+  }, [rechnung, stammdaten]);
+
+  const reportSumme = useMemo(() => report.reduce((sum, g) => sum + g.summe, 0), [report]);
+
+  const handleReportExport = () => {
+    if (report.length === 0) return;
+    const headers = 'Korrekt;Berechnet;Anzahl;Summe';
+    const rows = report
+      .map((g) => `${g.soll};${g.ist};${g.anzahl};${g.summe.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`)
+      .join('\n');
+    const bom = '﻿';
+    const blob = new Blob([bom + headers + '\n' + rows], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `gls-report-${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const toggleSelectAll = () => {
     if (!rechnung) return;
     if (selection.size === filteredData.length) {
@@ -620,6 +675,15 @@ export default function GlsAuditor() {
             >
               <Database size={12} />
               Stammdaten
+            </button>
+            <button
+              onClick={() => setMainView('report')}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all ${
+                mainView === 'report' ? 'bg-mokebo-surface2 text-mokebo-fg shadow-sm' : 'text-mokebo-muted hover:text-mokebo-fg'
+              }`}
+            >
+              <Filter size={12} />
+              Report
             </button>
           </div>
         </div>
@@ -1017,6 +1081,98 @@ export default function GlsAuditor() {
                           </tr>
                         ))}
                     </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : mainView === 'report' ? (
+          <div className="flex-grow overflow-y-auto p-8">
+            <div className="max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  <h2 className="text-xl font-black text-mokebo-fg">Report</h2>
+                  <p className="text-sm text-mokebo-muted font-medium mt-0.5">
+                    Fehlbuchungen &amp; Abweichungen, gruppiert nach Korrekt/Berechnet.
+                  </p>
+                </div>
+                <button
+                  onClick={handleReportExport}
+                  disabled={report.length === 0}
+                  className="flex items-center gap-2 bg-mokebo-green hover:bg-mokebo-dark disabled:bg-mokebo-surface2 disabled:text-mokebo-muted text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-black/30"
+                >
+                  <Download size={14} />
+                  Export (.csv)
+                </button>
+              </div>
+
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl overflow-hidden">
+                {!rechnung ? (
+                  <div className="py-24 text-center">
+                    <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Filter size={36} className="text-mokebo-muted" />
+                    </div>
+                    <p className="font-bold text-mokebo-muted max-w-xs mx-auto">
+                      Lade zuerst eine GLS-Rechnung hoch, um einen Report zu sehen.
+                    </p>
+                  </div>
+                ) : report.length === 0 ? (
+                  <div className="py-24 text-center">
+                    <div className="w-20 h-20 bg-emerald-500/15 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Check size={36} className="text-emerald-400" />
+                    </div>
+                    <p className="font-bold text-mokebo-muted max-w-xs mx-auto">
+                      Keine Fehlbuchungen oder Abweichungen in dieser Rechnung gefunden.
+                    </p>
+                  </div>
+                ) : (
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="text-[10px] uppercase font-black text-mokebo-muted border-b border-mokebo-border bg-white/5 tracking-widest">
+                        <th className="py-4 px-6">Korrekt / Berechnet</th>
+                        <th className="py-4 px-4 text-right">Anzahl</th>
+                        <th className="py-4 px-6 text-right">Summe</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {report.map((g) => {
+                        const istFehlbuchung = g.soll === 'Kein Zuschlag';
+                        const guenstig = !istFehlbuchung && g.diffBekannt && g.diffSumme > 0;
+                        const unguenstig = istFehlbuchung || (g.diffBekannt && g.diffSumme < 0);
+                        const rowClass = unguenstig ? 'bg-mokebo-rust/10' : guenstig ? 'bg-emerald-500/10' : '';
+                        const textClass = unguenstig
+                          ? 'text-mokebo-rustlight'
+                          : guenstig
+                          ? 'text-emerald-400'
+                          : 'text-mokebo-fg';
+                        return (
+                          <tr key={g.key} className={`${rowClass} transition-colors`}>
+                            <td className="py-3.5 px-6 text-sm">
+                              <span className="font-bold text-mokebo-fg">Korrekt: {g.soll}</span>
+                              <span className="text-mokebo-muted"> / Berechnet: </span>
+                              <span className="font-bold text-mokebo-fg">{g.ist}</span>
+                            </td>
+                            <td className="py-3.5 px-4 text-right text-sm font-mono text-mokebo-muted">{g.anzahl}</td>
+                            <td className={`py-3.5 px-6 text-right text-sm font-black font-mono ${textClass}`}>
+                              {g.summe.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot>
+                      <tr className="border-t border-mokebo-border bg-white/5">
+                        <td className="py-4 px-6 text-xs font-black uppercase tracking-widest text-mokebo-muted">
+                          Summe
+                        </td>
+                        <td className="py-4 px-4 text-right text-sm font-mono text-mokebo-muted">
+                          {report.reduce((sum, g) => sum + g.anzahl, 0)}
+                        </td>
+                        <td className="py-4 px-6 text-right text-sm font-black font-mono text-mokebo-fg">
+                          {reportSumme.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}
+                        </td>
+                      </tr>
+                    </tfoot>
                   </table>
                 )}
               </div>
