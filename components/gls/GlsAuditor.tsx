@@ -11,6 +11,11 @@ import {
   Search,
   Download,
   Filter,
+  Database,
+  Pencil,
+  Trash2,
+  Plus,
+  X,
 } from 'lucide-react';
 
 // ── Types ──────────────────────────────────────────────────────────
@@ -163,6 +168,12 @@ export default function GlsAuditor() {
   const [search, setSearch] = useState('');
   const [selection, setSelection] = useState<Set<number>>(new Set());
   const [modal, setModal] = useState<ModalState | null>(null);
+  const [mainView, setMainView] = useState<'rechnung' | 'stammdaten'>('rechnung');
+  const [stammdatenSearch, setStammdatenSearch] = useState('');
+  const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [editDraft, setEditDraft] = useState({ pNummer: '', kategorie: '' });
+  const [newEntry, setNewEntry] = useState({ pNummer: '', kategorie: '' });
+  const [deleteConfirmKey, setDeleteConfirmKey] = useState<string | null>(null);
 
   // Load stammdaten from localStorage on mount
   useEffect(() => {
@@ -211,6 +222,60 @@ export default function GlsAuditor() {
       setModal({ title: 'Fehler', message: 'Die Stammdaten-Datei konnte nicht verarbeitet werden.', type: 'error' });
     }
   }, []);
+
+  const persistStammdaten = useCallback((data: Record<string, string>) => {
+    const payload: Stammdaten = {
+      count: Object.keys(data).length,
+      data,
+      date: new Date().toLocaleDateString('de-DE'),
+    };
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    setStammdaten(payload);
+  }, []);
+
+  const startEditEntry = (pNummer: string, kategorie: string) => {
+    setEditingKey(pNummer);
+    setEditDraft({ pNummer, kategorie });
+  };
+
+  const cancelEditEntry = () => {
+    setEditingKey(null);
+    setEditDraft({ pNummer: '', kategorie: '' });
+  };
+
+  const saveEditEntry = (originalKey: string) => {
+    const nextPNummer = editDraft.pNummer.trim();
+    const nextKategorie = editDraft.kategorie.trim();
+    if (!nextPNummer || !nextKategorie) return;
+
+    const nextData = { ...(stammdaten?.data ?? {}) };
+    if (nextPNummer !== originalKey) {
+      delete nextData[originalKey];
+    }
+    nextData[nextPNummer] = nextKategorie;
+    persistStammdaten(nextData);
+    cancelEditEntry();
+  };
+
+  const deleteEntry = (pNummer: string) => {
+    const nextData = { ...(stammdaten?.data ?? {}) };
+    delete nextData[pNummer];
+    persistStammdaten(nextData);
+    setDeleteConfirmKey(null);
+  };
+
+  const addEntry = () => {
+    const pNummer = newEntry.pNummer.trim();
+    const kategorie = newEntry.kategorie.trim();
+    if (!pNummer || !kategorie) return;
+    if (!pNummer.startsWith('P-')) {
+      setModal({ title: 'Ungültige P-Nummer', message: 'Die P-Nummer muss mit "P-" beginnen.', type: 'error' });
+      return;
+    }
+    const nextData = { ...(stammdaten?.data ?? {}), [pNummer]: kategorie };
+    persistStammdaten(nextData);
+    setNewEntry({ pNummer: '', kategorie: '' });
+  };
 
   const handleStammdatenUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -383,7 +448,30 @@ export default function GlsAuditor() {
           </div>
         </div>
 
-        {rechnung && (
+        <div className="px-6 mb-6">
+          <div className="flex bg-mokebo-surface p-1 rounded-xl border border-mokebo-border">
+            <button
+              onClick={() => setMainView('rechnung')}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all ${
+                mainView === 'rechnung' ? 'bg-mokebo-surface2 text-mokebo-fg shadow-sm' : 'text-mokebo-muted hover:text-mokebo-fg'
+              }`}
+            >
+              <Upload size={12} />
+              Rechnung
+            </button>
+            <button
+              onClick={() => setMainView('stammdaten')}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all ${
+                mainView === 'stammdaten' ? 'bg-mokebo-surface2 text-mokebo-fg shadow-sm' : 'text-mokebo-muted hover:text-mokebo-fg'
+              }`}
+            >
+              <Database size={12} />
+              Stammdaten
+            </button>
+          </div>
+        </div>
+
+        {mainView === 'rechnung' && rechnung && (
           <div className="px-6 flex-grow overflow-y-auto">
             <div className="space-y-6">
               <div>
@@ -440,7 +528,184 @@ export default function GlsAuditor() {
 
       {/* Main Content */}
       <main className="flex-grow flex flex-col overflow-hidden">
-        {!rechnung ? (
+        {mainView === 'stammdaten' ? (
+          <div className="flex-grow overflow-y-auto p-8">
+            <div className="max-w-4xl mx-auto space-y-6">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  <h2 className="text-xl font-black text-mokebo-fg">Stammdaten</h2>
+                  <p className="text-sm text-mokebo-muted font-medium mt-0.5">
+                    {stammdaten ? `${stammdaten.count} Artikel · Stand: ${stammdaten.date}` : 'Noch keine Stammdaten importiert.'}
+                  </p>
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-mokebo-muted">
+                    <Search size={14} />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="P-Nummer oder Kategorie suchen..."
+                    value={stammdatenSearch}
+                    onChange={(e) => setStammdatenSearch(e.target.value)}
+                    className="pl-9 pr-4 py-2.5 bg-white/5 border border-mokebo-border rounded-xl text-sm text-mokebo-fg placeholder:text-mokebo-muted focus:ring-4 focus:ring-mokebo-mint/15 outline-none transition-all w-72"
+                  />
+                </div>
+              </div>
+
+              {/* Neuer Eintrag */}
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-2xl p-4 flex flex-wrap items-end gap-3">
+                <div className="flex-1 min-w-[160px]">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1.5">P-Nummer</label>
+                  <input
+                    type="text"
+                    placeholder="P-12345"
+                    value={newEntry.pNummer}
+                    onChange={(e) => setNewEntry((prev) => ({ ...prev, pNummer: e.target.value }))}
+                    className="w-full px-3 py-2 bg-white/5 border border-mokebo-border rounded-xl text-sm font-mono text-mokebo-fg placeholder:text-mokebo-muted focus:ring-4 focus:ring-mokebo-mint/15 outline-none transition-all"
+                  />
+                </div>
+                <div className="flex-1 min-w-[160px]">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-mokebo-muted mb-1.5">Kategorie</label>
+                  <input
+                    type="text"
+                    placeholder="z. B. Kein Zuschlag"
+                    value={newEntry.kategorie}
+                    onChange={(e) => setNewEntry((prev) => ({ ...prev, kategorie: e.target.value }))}
+                    className="w-full px-3 py-2 bg-white/5 border border-mokebo-border rounded-xl text-sm text-mokebo-fg placeholder:text-mokebo-muted focus:ring-4 focus:ring-mokebo-mint/15 outline-none transition-all"
+                  />
+                </div>
+                <button
+                  onClick={addEntry}
+                  disabled={!newEntry.pNummer.trim() || !newEntry.kategorie.trim()}
+                  className="flex items-center gap-2 bg-mokebo-green hover:bg-mokebo-dark disabled:bg-mokebo-surface2 disabled:text-mokebo-muted text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-black/30"
+                >
+                  <Plus size={14} />
+                  Hinzufügen
+                </button>
+              </div>
+
+              {/* Tabelle */}
+              <div className="bg-mokebo-surface border border-mokebo-border rounded-3xl overflow-hidden">
+                {!stammdaten || stammdaten.count === 0 ? (
+                  <div className="py-24 text-center">
+                    <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Database size={36} className="text-mokebo-muted" />
+                    </div>
+                    <p className="font-bold text-mokebo-muted max-w-xs mx-auto">
+                      Importiere eine Stammdaten-Datei oder füge oben manuell einen Eintrag hinzu.
+                    </p>
+                  </div>
+                ) : (
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="text-[10px] uppercase font-black text-mokebo-muted border-b border-mokebo-border bg-white/5 tracking-widest">
+                        <th className="py-4 px-6">P-Nummer</th>
+                        <th className="py-4 px-4">Kategorie</th>
+                        <th className="py-4 px-6 text-right">Aktionen</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {Object.entries(stammdaten.data)
+                        .filter(
+                          ([p, kat]) =>
+                            p.toLowerCase().includes(stammdatenSearch.toLowerCase()) ||
+                            kat.toLowerCase().includes(stammdatenSearch.toLowerCase())
+                        )
+                        .sort(([a], [b]) => a.localeCompare(b))
+                        .map(([pNummer, kategorie]) => (
+                          <tr key={pNummer} className="group hover:bg-white/5 transition-colors">
+                            {editingKey === pNummer ? (
+                              <>
+                                <td className="py-3 px-6">
+                                  <input
+                                    type="text"
+                                    value={editDraft.pNummer}
+                                    onChange={(e) => setEditDraft((prev) => ({ ...prev, pNummer: e.target.value }))}
+                                    className="w-full px-2 py-1.5 bg-white/5 border border-mokebo-border rounded-lg text-xs font-mono text-mokebo-fg outline-none focus:ring-2 focus:ring-mokebo-mint/20"
+                                  />
+                                </td>
+                                <td className="py-3 px-4">
+                                  <input
+                                    type="text"
+                                    value={editDraft.kategorie}
+                                    onChange={(e) => setEditDraft((prev) => ({ ...prev, kategorie: e.target.value }))}
+                                    className="w-full px-2 py-1.5 bg-white/5 border border-mokebo-border rounded-lg text-xs text-mokebo-fg outline-none focus:ring-2 focus:ring-mokebo-mint/20"
+                                  />
+                                </td>
+                                <td className="py-3 px-6 text-right">
+                                  <div className="flex items-center justify-end gap-2">
+                                    <button
+                                      onClick={() => saveEditEntry(pNummer)}
+                                      className="p-2 text-mokebo-mint hover:bg-mokebo-mint/15 rounded-lg transition-all"
+                                      title="Speichern"
+                                    >
+                                      <Check size={14} />
+                                    </button>
+                                    <button
+                                      onClick={cancelEditEntry}
+                                      className="p-2 text-mokebo-muted hover:bg-white/5 rounded-lg transition-all"
+                                      title="Abbrechen"
+                                    >
+                                      <X size={14} />
+                                    </button>
+                                  </div>
+                                </td>
+                              </>
+                            ) : (
+                              <>
+                                <td className="py-3.5 px-6">
+                                  <span className="font-mono font-black text-xs text-mokebo-mint bg-mokebo-mint/15 px-2 py-1 rounded-md inline-block">
+                                    {pNummer}
+                                  </span>
+                                </td>
+                                <td className="py-3.5 px-4 text-sm text-mokebo-fg">{kategorie}</td>
+                                <td className="py-3.5 px-6 text-right">
+                                  {deleteConfirmKey === pNummer ? (
+                                    <div className="flex items-center justify-end gap-2 text-[10px] font-black text-mokebo-rustlight">
+                                      <span>Löschen?</span>
+                                      <button
+                                        onClick={() => deleteEntry(pNummer)}
+                                        className="bg-mokebo-rust text-white px-2.5 py-1 rounded-lg hover:bg-mokebo-dark transition-all"
+                                      >
+                                        JA
+                                      </button>
+                                      <button
+                                        onClick={() => setDeleteConfirmKey(null)}
+                                        className="bg-mokebo-surface2 border border-mokebo-border text-mokebo-muted px-2 py-1 rounded-lg hover:bg-white/5 transition-all"
+                                      >
+                                        NEIN
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center justify-end gap-2">
+                                      <button
+                                        onClick={() => startEditEntry(pNummer, kategorie)}
+                                        className="p-2 text-mokebo-muted hover:text-mokebo-mint hover:bg-mokebo-mint/15 rounded-lg transition-all"
+                                        title="Bearbeiten"
+                                      >
+                                        <Pencil size={14} />
+                                      </button>
+                                      <button
+                                        onClick={() => setDeleteConfirmKey(pNummer)}
+                                        className="p-2 text-mokebo-muted hover:text-mokebo-rustlight hover:bg-mokebo-rust/15 rounded-lg transition-all"
+                                        title="Löschen"
+                                      >
+                                        <Trash2 size={14} />
+                                      </button>
+                                    </div>
+                                  )}
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : !rechnung ? (
           <div className="flex-grow flex items-center justify-center p-8">
             <div
               className={`max-w-xl w-full bg-mokebo-surface rounded-3xl p-12 shadow-xl border-2 border-dashed ${
