@@ -640,14 +640,15 @@ export default function GlsAuditor() {
   const handleExport = () => {
     if (!rechnung || selection.size === 0) return;
     const selectedRows = rechnung.filter((r) => selection.has(r.id));
-    const headers = 'Paketnummer;P-Nummer;Bezeichnung;Nettobetrag;Status;Laut Stammdaten';
+    if (selectedRows.length === 0) return;
+
+    // Diese Datei geht an GLS raus – daher exakt die Original-Spalten (und deren
+    // Reihenfolge) aus der von GLS erhaltenen Rechnung reproduzieren, ohne unsere
+    // interne Soll-Kategorie/Status-Einordnung preiszugeben.
+    const headerKeys = Object.keys(selectedRows[0].raw);
+    const headers = headerKeys.join(';');
     const csvContent = selectedRows
-      .map(
-        (r) =>
-          `${r.paketnummer};${r.pNummer || ''};${r.bezeichnung};${r.betrag.toLocaleString('de-DE')};${r.type};${
-            (r.pNummer && stammdaten?.data[r.pNummer]) || ''
-          }`
-      )
+      .map((r) => headerKeys.map((k) => r.raw[k] ?? '').join(';'))
       .join('\n');
 
     const bom = '﻿';
