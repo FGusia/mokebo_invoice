@@ -592,16 +592,18 @@ export default function GlsAuditor() {
 
   const handleReportExport = () => {
     if (report.length === 0) return;
-    const kopf = belegInfo
-      ? `Beleg-Nr.;${belegInfo.nummer};Beleg-Datum;${belegInfo.datum}\n\n`
-      : '';
-    const headers = 'Korrekt;Berechnet;Anzahl;Summe';
+    const belegnr = belegInfo?.nummer ?? '';
+    const belegdatum = belegInfo?.datum ?? '';
+    const headers = 'Belegnr;Belegdatum;Korrekt;Berechnet;Anzahl;Summe';
     const rows = report
-      .map((g) => `${g.soll};${g.ist};${g.anzahl};${g.summe.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`)
+      .map(
+        (g) =>
+          `${belegnr};${belegdatum};${g.soll};${g.ist};${g.anzahl};${g.summe.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`
+      )
       .join('\n');
-    const fusszeile = `\nSumme (netto);;${report.reduce((sum, g) => sum + g.anzahl, 0)};${reportSumme.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+    const fusszeile = `\n${belegnr};${belegdatum};Summe (netto);;${report.reduce((sum, g) => sum + g.anzahl, 0)};${reportSumme.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
     const bom = '﻿';
-    const blob = new Blob([bom + kopf + headers + '\n' + rows + fusszeile], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([bom + headers + '\n' + rows + fusszeile], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
