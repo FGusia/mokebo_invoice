@@ -151,6 +151,17 @@ const parseCSV = (text: string, delimiter: string = ';'): Record<string, string>
   });
 };
 
+// Sucht flexibel nach einer Spalte, deren Header eines der Muster enthält
+// (Groß-/Kleinschreibung egal) – da wir den exakten GLS-Spaltennamen nicht kennen.
+const findeSpaltenWert = (row: Record<string, string>, muster: string[]): string => {
+  const keys = Object.keys(row);
+  for (const m of muster) {
+    const key = keys.find((k) => k.toLowerCase().includes(m));
+    if (key && row[key]) return row[key];
+  }
+  return '';
+};
+
 const extractPNummer = (referenz: string): string | null => {
   if (!referenz || referenz === '-') return null;
   const parts = referenz.trim().split(/\s+/);
@@ -196,6 +207,7 @@ function Modal({ title, message, type = 'info', onConfirm, onClose }: ModalState
 export default function GlsAuditor() {
   const [stammdaten, setStammdaten] = useState<Stammdaten | null>(null);
   const [rechnung, setRechnung] = useState<RechnungRow[] | null>(null);
+  const [belegInfo, setBelegInfo] = useState<{ nummer: string; datum: string } | null>(null);
   const [filter, setFilter] = useState('Alle');
   const [search, setSearch] = useState('');
   const [selection, setSelection] = useState<Set<number>>(new Set());
@@ -397,6 +409,14 @@ export default function GlsAuditor() {
       const text = await readFileWithEncoding(file, 'iso-8859-1');
       const rawRows = parseCSV(text);
 
+      if (rawRows.length > 0) {
+        const nummer = findeSpaltenWert(rawRows[0], ['beleg-nr', 'belegnummer', 'beleg nr', 'rechnungs-nr', 'rechnungsnummer']);
+        const datum = findeSpaltenWert(rawRows[0], ['beleg-datum', 'belegdatum', 'rechnungsdatum', 'datum']);
+        setBelegInfo(nummer || datum ? { nummer, datum } : null);
+      } else {
+        setBelegInfo(null);
+      }
+
       const processed: RechnungRow[] = rawRows.map((row, index) => {
         const paketnummer = row['Paketnummer'] || '';
         const referenz = row['Referenz (en) pro Paket'] || '';
@@ -572,12 +592,16 @@ export default function GlsAuditor() {
 
   const handleReportExport = () => {
     if (report.length === 0) return;
+    const kopf = belegInfo
+      ? `Beleg-Nr.;${belegInfo.nummer};Beleg-Datum;${belegInfo.datum}\n\n`
+      : '';
     const headers = 'Korrekt;Berechnet;Anzahl;Summe';
     const rows = report
       .map((g) => `${g.soll};${g.ist};${g.anzahl};${g.summe.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`)
       .join('\n');
+    const fusszeile = `\nSumme (netto);;${report.reduce((sum, g) => sum + g.anzahl, 0)};${reportSumme.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
     const bom = '﻿';
-    const blob = new Blob([bom + headers + '\n' + rows], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([bom + kopf + headers + '\n' + rows + fusszeile], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
@@ -1152,6 +1176,13 @@ export default function GlsAuditor() {
                       <p className="text-xs text-mokebo-muted font-medium mt-0.5">
                         Fehlbuchungen &amp; Abweichungen, gruppiert nach Korrekt/Berechnet.
                       </p>
+                      {belegInfo && (belegInfo.nummer || belegInfo.datum) && (
+                        <p className="text-xs font-bold text-mokebo-fg mt-1.5">
+                          {belegInfo.nummer && <>Beleg-Nr. {belegInfo.nummer}</>}
+                          {belegInfo.nummer && belegInfo.datum && <span className="text-mokebo-muted"> &middot; </span>}
+                          {belegInfo.datum && <>{belegInfo.datum}</>}
+                        </p>
+                      )}
                     </div>
                     <button
                       onClick={handleReportExport}
