@@ -590,6 +590,14 @@ export default function GlsAuditor() {
     [report]
   );
 
+  const exportDateiname = () => {
+    if (belegInfo && (belegInfo.nummer || belegInfo.datum)) {
+      const teile = [belegInfo.nummer, belegInfo.datum].filter(Boolean).join('-');
+      return teile.replace(/[\\/:*?"<>|]/g, '_');
+    }
+    return `gls-audit-${new Date().toISOString().split('T')[0]}`;
+  };
+
   const handleReportExport = () => {
     if (report.length === 0) return;
     const belegnr = belegInfo?.nummer ?? '';
@@ -607,7 +615,7 @@ export default function GlsAuditor() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', `gls-report-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `${exportDateiname()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -647,7 +655,7 @@ export default function GlsAuditor() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', `gls-audit-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `${exportDateiname()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
